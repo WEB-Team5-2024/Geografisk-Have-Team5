@@ -1,6 +1,11 @@
 # Geografisk-Have-Team5
 
-This template should help get you started developing with Vue 3 in Vite.
+Vue projekt for geografisk have med interaktiv kort
+
+devdeps:
+- vue
+- firebase
+- sass
 
 ## Recommended IDE Setup
 
