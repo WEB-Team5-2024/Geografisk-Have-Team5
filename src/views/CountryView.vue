@@ -1,5 +1,5 @@
 <template>
-    <!--TopNav/-->
+    <TopNav/>
     <div>
         <img src="" alt="">
         <div class="titleContainer">
@@ -13,12 +13,9 @@
         <RouterLink to="/"><button>Liste over planter</button></RouterLink>
         </div>
     </div>
-    
-    <!--BottomNav/-->
 </template>
 
 <script setup>
-    import BottomNav from '@/components/bottomNav.vue';
     import TopNav from '@/components/TopNav.vue';
 </script>
 <style lang="scss">
