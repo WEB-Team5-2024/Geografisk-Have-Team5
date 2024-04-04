@@ -40,7 +40,9 @@
         color: black;
     }
     .titleContainer{
-        background-image: url('./assets/images/Yucca-flaccida-palmelilje-1024x683.png');
+        background-image: url('../assets/images/Yucca-flaccida-palmelilje-1024x683.png');
+        text-align: center;
+        padding: 20px;
     }
 
 </style>
