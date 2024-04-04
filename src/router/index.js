@@ -10,8 +10,8 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/about',
-      name: 'about',
+      path: '/OmHaven',
+      name: 'omhaven',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
@@ -26,6 +26,12 @@ const router = createRouter({
       path: '/calender',
       name: 'calender',
       component: () => import('../views/CalenderView.vue')
+    },
+    {
+      path: '/404',
+      name: '404',
+      component: () => import('../views/404View.vue')
+    }
     },
     {
       path: '/404',
