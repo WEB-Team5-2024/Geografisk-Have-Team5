@@ -1,10 +1,12 @@
 <template>
     <TopNav />
-    <h1 class="PageNotFound">404 <br> Page not found</h1>
+    
+    <BigCard />
 </template>
   
 <script setup>
     import TopNav from '../components/TopNav.vue'
+    import BigCard from '../components/BigCard.vue'
 </script>
 <style lang="scss">
 
