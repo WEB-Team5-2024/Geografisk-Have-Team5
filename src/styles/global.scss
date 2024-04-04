@@ -1,3 +1,29 @@
+//colors
+$background-color: #F4F4F4;
+$primary-color: #61805B;
+$secondary-color: #6C6E83;
+$btn-color: #494D66;
+
+//fonts
+$primary-font: 'Poppins', sans-serif;
+
+//font-sizes
+$extra-small-font-size: 12px;
+$small-font-size: 14px;
+$medium-font-size: 16px;
+$large-font-size: 18px;
+$extra-large-font-size: 25px;
+
+//font-Weights
+$thin-weight:     200;
+$light-weight:    300;
+$regular-weight:  400;
+$bold-weight:     700;
+
+//drop-shadows
+$drop-shadow: 0px 3px 8px (#000000);
+$inner-shadow: 0px 2px 10px (#000000) inset;
+$btn-shadow: 2px 3.5px 10px (#000000);
 
 
 button{
