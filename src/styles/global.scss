@@ -5,6 +5,8 @@ $secondary-color: #6C6E83;
 $btn-color: #494D66;
 
 //fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 $primary-font: 'Poppins', sans-serif;
 
 //font-sizes
@@ -25,8 +27,12 @@ $drop-shadow: 0px 3px 8px (#000000);
 $inner-shadow: 0px 2px 10px (#000000) inset;
 $btn-shadow: 2px 3.5px 10px (#000000);
 
+* {
+    font-family: $primary-font;
+}
 
-button{
+
+@mixin button{
     top: 563px;
     left: 8px;
     width: 375px;
@@ -36,4 +42,6 @@ button{
     box-shadow: 2px 4px 10px #00000050;
     border-radius: 55px;
     opacity: 1;
+    border-style: none;
+    color: white;
 }
