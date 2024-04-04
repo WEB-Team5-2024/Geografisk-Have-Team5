@@ -1,11 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import bottomNav from './components/bottomNav.vue';
 </script>
 
 <template>
-
-
+      <bottomNav/>
   <RouterView />
 </template>
 

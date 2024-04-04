@@ -18,6 +18,16 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      path: '/map',
+      name: 'map',
+      component: () => import('../views/MapView.vue')
+    },
+    {
+      path: '/calender',
+      name: 'calender',
+      component: () => import('../views/CalenderView.vue')
+    },
+    {
       path: '/country',
       name: 'country',
       // route level code-splitting
