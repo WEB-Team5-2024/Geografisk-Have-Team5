@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+
 import bottomNav from './components/bottomNav.vue';
 </script>
 
