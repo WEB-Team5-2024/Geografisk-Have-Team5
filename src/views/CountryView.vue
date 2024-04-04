@@ -1,5 +1,5 @@
 <template>
-    <!--TopNav-->
+    <!--TopNav/-->
     <div>
         <img src="" alt="">
         <div class="titleContainer">
@@ -18,8 +18,8 @@
 </template>
 
 <script setup>
-    //import BottomNav from '@/components/bottomNav.vue';
-   // import TopNav from '@/components/TopNav.vue';
+    import BottomNav from '@/components/bottomNav.vue';
+    import TopNav from '@/components/TopNav.vue';
 </script>
 <style lang="scss">
     @import '@/styles/global.scss';
