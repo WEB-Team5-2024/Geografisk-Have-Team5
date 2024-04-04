@@ -1,9 +1,7 @@
-<script setup>
-import TopNav from '../components/TopNav.vue'
-</script>
-
 <template>
-  <main>
-    <TopNav />
-  </main>
+  <TopNav />
 </template>
+
+<script setup>
+  import TopNav from '../components/TopNav.vue'
+</script>
