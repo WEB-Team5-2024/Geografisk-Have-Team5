@@ -12,7 +12,7 @@
 <script setup>
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '../styles/global.scss';
 .julemarkedcard{
     background-color: $secondary-color;
@@ -23,6 +23,7 @@
     margin-right: auto;
     height: 200px;
     width: 320px;
+    
 }
 .julemarkedcard-beskrivelse{
     font: $primary-font;
