@@ -15,7 +15,9 @@ const props = defineProps(
 );
 </script>
 
-<style>
+<style lang="scss">
+@import '../styles/global.scss';
+
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -28,7 +30,7 @@ const props = defineProps(
   height: 50px;
   border: 3px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 3px solid #3498db;
+  border-top: 3px solid #61805b;
   animation: spin 1s linear infinite;
 }
 

@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- Use conditional rendering to display either the loading spinner or router-view -->
+    <!-- her bruger jeg conditional rendering til at vise loadingspinner eller router-view-->
     <template v-if="isLoading">
       <loading-spinner :loading="true" />
     </template>
     <template v-else>
       <router-view />
     </template>
-    <!-- Always display BottomNav -->
+    <!-- Bottom nav vises alti' alti' -->
     <BottomNav />
   </div>
 </template>
@@ -20,11 +20,11 @@ import BottomNav from './components/bottomNav.vue';
 const isLoading = ref(false);
 
 const fetchData = () => {
-  // Simulating app loading
+  // sætter loading til at være "true"
   isLoading.value = true;
   setTimeout(() => {
-    // Your API logic should be here
-    // When API loading is finished, set isLoading back to false
+    // 1. API logik skal insættes her, istedet for en setTimeOut funktion, skal der laves en async/await function.
+    // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
     isLoading.value = false;
   }, 2000);
 };
