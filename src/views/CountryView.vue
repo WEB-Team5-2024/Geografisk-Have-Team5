@@ -11,11 +11,13 @@
         <RouterLink to="/"><button>Afspil lydbog</button></RouterLink>
         <RouterLink to="/"><button>Liste over planter</button></RouterLink>
         </div>
+        <AudioPlayer/>
     </div>
 </template>
 
 <script setup>
     import TopNav from '@/components/TopNav.vue';
+    import AudioPlayer from '@/components/AudioPlayer.vue'
 </script>
 <style lang="scss">
     @import '@/styles/global.scss';
