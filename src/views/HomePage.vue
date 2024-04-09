@@ -29,6 +29,6 @@
   </script>
   
   <style scoped lang="scss">
-  @import "@/styles/HomePage.scss";
-  </style>
+@import "@/styles/HomePage.scss";
+</style>
   
