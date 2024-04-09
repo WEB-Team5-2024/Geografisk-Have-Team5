@@ -37,6 +37,11 @@ const router = createRouter({
       name: 'country',
       component: () => import('../views/CountryView.vue')
     },
+    {
+      path: '/plantoverview',
+      name: 'plantoverview',
+      component: () => import('../views/PlantOverview.vue')
+    },
 
   ]
 })
