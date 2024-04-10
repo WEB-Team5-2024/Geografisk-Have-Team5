@@ -18,7 +18,7 @@
 
 <style scoped lang="scss">
 @import '../styles/global.scss';
-.bottomNavContainer {
+.bottomNavContainer{
   display: flex;
   justify-content: space-around;
   padding: 18px;

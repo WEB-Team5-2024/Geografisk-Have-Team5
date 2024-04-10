@@ -36,7 +36,13 @@ const router = createRouter({
       path: '/julemarked',
       name: 'julemarked',
       component: () => import('../views/julemarked.vue')
-    }
+    },
+    {
+      path: '/country',
+      name: 'country',
+      component: () => import('../views/CountryView.vue')
+    },
+
   ]
 })
 
