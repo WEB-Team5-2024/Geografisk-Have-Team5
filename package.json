@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@liripeng/vue-audio-player": "^1.5.3",
     "pinia": "^2.1.7",
     "sass": "^1.72.0",
     "v-calendar": "^3.1.2",

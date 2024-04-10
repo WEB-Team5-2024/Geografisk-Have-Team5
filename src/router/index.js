@@ -36,7 +36,14 @@ const router = createRouter({
       component: () => import('../views/PlantPage.vue'), 
     },
     
-  ],
-});
+    {
+      path: '/country',
+      name: 'country',
+      component: () => import('../views/CountryView.vue')
+    },
+
+  ]
+})
+
 
 export default router;

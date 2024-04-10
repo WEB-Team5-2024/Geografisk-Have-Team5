@@ -1,14 +1,39 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-
-import bottomNav from './components/bottomNav.vue';
-</script>
-
 <template>
-      <bottomNav/>
-  <RouterView />
+  <div>
+    <!-- her bruger jeg conditional rendering til at vise loadingspinner eller router-view-->
+    <template v-if="isLoading">
+      <loading-spinner :loading="true" />
+    </template>
+    <template v-else>
+      <router-view />
+    </template>
+    <!-- Bottom nav vises alti' alti' -->
+    <BottomNav />
+  </div>
 </template>
 
-<style scoped>
+<script setup>
+import { ref, onMounted } from 'vue';
+import LoadingSpinner from './components/LoadingSpinner.vue';
+import BottomNav from './components/bottomNav.vue';
 
+const isLoading = ref(false);
+
+const fetchData = () => {
+  // sætter loading til at være "true"
+  isLoading.value = true;
+  setTimeout(() => {
+    // 1. API logik skal insættes her, istedet for en setTimeOut funktion, skal der laves en async/await function.
+    // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
+    isLoading.value = false;
+  }, 2000);
+};
+
+onMounted(() => {
+  fetchData();
+});
+</script>
+
+<style scoped lang="scss">
+/* Your scoped styles here */
 </style>
