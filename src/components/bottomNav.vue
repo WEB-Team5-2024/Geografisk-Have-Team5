@@ -34,11 +34,14 @@
 .iconSvgs {
   width: 40px;
   height: 40px;
+  
 }
 
 a{
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  justify-content: center;
 }
 
 
