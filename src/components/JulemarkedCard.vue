@@ -6,6 +6,11 @@
     <div class="julemarkedcard-beskrivelse">
         <p>Kom til det hyggeligste julemarked i Geografisk Have, hvor du kan finde bæredygtige julegaver uden brug af plastik, varme dig på julegløgg og æbleskiver og ikke mindst deltage i de mange hyggelige aktiviteter som julebanko, bålhygge eller dus med dyrene.</p>
     </div>
+        <div class="slideknap-container">
+            <div class="slideknap">
+                <div class="køb-billet"> <p>Køb Billet</p></div>
+            </div>
+        </div>
     </div>
 </template>
   
@@ -14,6 +19,30 @@
 </script>
 <style lang="scss" scoped>
 @import '../styles/global.scss';
+.slideknap-container{
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+
+    width: 90%;
+    height: 20%;
+}
+.slideknap{
+    height: 100%;
+    width: 100%;
+    background-color: #4A4C63;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+}
+.køb-billet{
+    display: flex;
+    align-items: center;
+    height: 100%;
+    color: $background-color;
+}
+
+
 .julemarkedcard{
     background-color: $secondary-color;
     box-shadow: $drop-shadow;
@@ -21,6 +50,8 @@
 
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 5%;
+    margin-top: 2%;
     height: 200px;
     width: 320px;
     
