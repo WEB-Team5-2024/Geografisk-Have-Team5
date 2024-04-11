@@ -8,8 +8,8 @@
             Japan byder på en mangfoldig plantenatur, der spænder fra de skovklædte bjerge i nord til de frodige regnskove i syd. I nord findes nåletræer som gran og fyr, mens de subtropiske områder i syd er hjemsted for eksotiske træer, buske og blomster. Bambus er udbredt, og sakura (kirsebærblomster) er en ikonisk del af japansk kultur. Den rige plantenatur afspejler Japans kulturelle arv og forbindelse til naturen. Japan's planteliv udgør også et fundament for landets økologiske balance og støtter en rig biodiversitet af både flora og fauna. Denne dybe forbindelse til naturen er en central del af japansk identitet og tradition, og den afspejler sig i alt fra kunst og litteratur til dagliglivet.
         </p>
         <div class="buttonContainer">
-        <RouterLink to="/"><button>Afspil lydbog</button></RouterLink>
-        <RouterLink to="/"><button>Liste over planter</button></RouterLink>
+        <button>Afspil lydbog</button>
+        <RouterLink to="/plantoverview"><button>Liste over planter</button></RouterLink>
         </div>
         
     </div>
@@ -24,6 +24,8 @@
 
     button{
         @include button;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     body{
@@ -38,7 +40,7 @@
     p{
         color: black;
         text-align:center;
-        padding: 10px 20px 10px 20px;
+       
 
     }
     .titleContainer{

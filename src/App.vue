@@ -7,15 +7,16 @@
     <template v-else>
       <router-view />
     </template>
-    <!-- Bottom nav vises alti' alti' -->
-    <BottomNav />
+    
   </div>
+  <!-- Bottom nav vises alti' alti' -->
+  <BottomNav />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import LoadingSpinner from './components/LoadingSpinner.vue';
-import BottomNav from './components/bottomNav.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
+import BottomNav from '@/components/bottomNav.vue';
 
 const isLoading = ref(false);
 

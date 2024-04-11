@@ -35,12 +35,16 @@ $border-radius: 10px;
 
 body {
     font-family: $primary-font;
-    padding-bottom: 90px;
+    
+    
 }
+
+
 
 img{
     width: 100%;
-    height: auto;
+    max-height:20vh;
+    object-fit: cover;
 }
 
 @mixin button{

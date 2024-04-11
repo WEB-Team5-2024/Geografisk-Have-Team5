@@ -24,12 +24,11 @@
   padding: 18px;
   gap: 20px;
   width: 100%;
-  height: 73px;
+  position: fixed;
   background-color: $primary-color;
   border-radius: 20px 20px 0 0;
   box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75) inset;
-  position: fixed;
-  bottom: 0;
+  bottom: 0px;
 }
 
 .iconSvgs {
