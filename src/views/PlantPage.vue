@@ -42,6 +42,51 @@
       </main>
     </div>
   </template>
+
   <style scoped lang="scss">
-  @import "@/styles/PlantPage.scss";
+  @import "@/styles/global.scss";
+
+  .page-container {
+    .header {
+      position: relative;
+      text-align: center;
+      .plant-banner {
+        width: 100%;
+        height: auto;
+      }
+      .plant-name {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+        font-size: $extra-large-font-size;
+        font-weight: $bold-weight;
+        padding: 0.5rem 1rem; 
+      }
+    }
+
+  .content {
+    .plant-details {
+        margin-top: 50px;
+        margin-left: 1rem;
+      
+
+      article {
+        h3 {
+          color: black;
+          font-size: $large-font-size;
+          font-weight: $bold-weight;
+          margin-bottom: 1rem;
+        }
+
+        p {
+          color: black; 
+          font-size: $medium-font-size;
+          margin-bottom: 4rem;
+        }
+      }
+    }
+  }
+}
   </style>
