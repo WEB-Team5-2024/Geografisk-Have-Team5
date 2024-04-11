@@ -33,9 +33,19 @@ const router = createRouter({
       component: () => import('../views/404View.vue')
     },
     {
+      path: '/julemarked',
+      name: 'julemarked',
+      component: () => import('../views/julemarked.vue')
+    },
+    {
       path: '/country',
       name: 'country',
       component: () => import('../views/CountryView.vue')
+    },
+    {
+      path: '/plantoverview',
+      name: 'plantoverview',
+      component: () => import('../views/PlantOverview.vue')
     },
 
   ]
