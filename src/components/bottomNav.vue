@@ -22,7 +22,7 @@
   display: flex;
   justify-content: space-around;
   padding: 18px;
-  gap: 20px;
+ 
   width: 100%;
   position: fixed;
   background-color: $primary-color;

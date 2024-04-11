@@ -10,9 +10,9 @@
         <h1>Geografisk have</h1>
         <p>Geografisk Have er en 14 ha stor oplevelsespark og botanisk have med mere end 2000 forskellige træer, buske og planter, som er opdelt i geografiske områder. Lad dig inspirere af Naturhaven, Krydderurtehaven, Den Økologiske Køkkenhave, Staudehaven og mange flere dejlige steder.</p>
         <div class="button-container">
-          <button>Kort</button>
-          <button>Om haven</button>
-          <button>Event</button>
+          <router-link to="/map"><button>Kort</button></router-link>
+          <router-link to="/omHaven"><button>Om haven</button></router-link>
+          <router-link to="/julemarked"><button>Event</button></router-link>
         </div>
     </div>
     <bottomNav></bottomNav>
@@ -59,18 +59,14 @@
     align-items: center;
 
     button {
-      background-color: $btn-color;
-      border: none;
-      border-radius: 25px;
-      padding: 15px 20px;
-      font-size: $medium-font-size;
-      color: white;
-      box-shadow: $btn-shadow;
-      transition: background-color 0.3s;
-      width: 100%; 
-      &:hover {
-        background-color: darken($btn-color, 10%);
-      }
+      @include button;
+      width: 100%;
+    }
+    a {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      align-items: center;
     }
   }
 }
