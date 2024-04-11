@@ -9,7 +9,7 @@
         </p>
         <div class="buttonContainer">
         <button>Afspil lydbog</button>
-        <RouterLink to="/plantoverview"><button>Liste over planter</button></RouterLink>
+        <button><RouterLink to="/plantoverview">Liste over planter</RouterLink></button>
         </div>
         
     </div>
@@ -22,10 +22,15 @@
 <style lang="scss">
     @import '@/styles/global.scss';
 
+    a{
+        width: 100%;
+    }
+
     button{
         @include button;
         margin-left: auto;
         margin-right: auto;
+        
     }
 
     body{

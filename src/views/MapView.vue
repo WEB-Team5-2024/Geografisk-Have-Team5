@@ -49,7 +49,7 @@ p{
 .menuContainer {
     justify-content: center;
     margin-left:auto;
-    
+    margin-bottom: 100px;
     gap:20px;
     .menuItem {
         display: flex;

@@ -87,6 +87,7 @@ function hasEventsOnDay(date) {
   background-color: $btn-color;
   color: white;
   border-style: none;
+  margin-bottom: 100px;
 }
 
 .daysOfWeek {

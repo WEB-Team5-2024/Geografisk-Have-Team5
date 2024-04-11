@@ -36,5 +36,10 @@
   height: 40px;
 }
 
+a{
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 </style>
