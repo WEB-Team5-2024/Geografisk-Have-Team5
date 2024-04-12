@@ -54,5 +54,8 @@ import TopNav from '../components/TopNav.vue'
 .titleHeader {
   text-align: center;
 }
+p{
+  color:black;
+}
 
 </style>

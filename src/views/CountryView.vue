@@ -51,6 +51,8 @@
     .titleContainer{
         background-image: url('../assets/images/Yucca-flaccida-palmelilje-1024x683.png');
         text-align: center;
+        background-repeat: no-repeat;
+        width: 100vw;
         height: 179px;
         display: flex;
         flex-direction: column;
