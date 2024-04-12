@@ -1,4 +1,5 @@
 <template>
+  <TopNav/>
     <div class="page-container">
     <header class="header">
       <img src="@/assets/images/Cryptomeria.png" alt="Cryptomeria" class="plant-banner">
@@ -42,6 +43,10 @@
       </main>
     </div>
   </template>
+
+ <script setup>
+import TopNav from '@/components/TopNav.vue';
+</script>
 
   <style scoped lang="scss">
   @import "@/styles/global.scss";

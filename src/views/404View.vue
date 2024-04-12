@@ -17,5 +17,6 @@
     font-weight: 700;
     text-align: center;
     color: #000;
+    overflow: hidden;
 }
 </style>

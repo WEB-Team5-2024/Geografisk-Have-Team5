@@ -39,7 +39,10 @@ import TopNav from '../components/TopNav.vue'
 
 </script>
 
-<style>
+<style scoped lang="scss">
+.contentContainer{
+  margin-bottom: 50px;
+}
 
 .aboutText{
   display: flex;

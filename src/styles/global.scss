@@ -35,18 +35,25 @@ $border-radius: 10px;
 
 body {
     font-family: $primary-font;
-    padding-bottom: 90px;
+    
+    
+}
+
+a{
+    color: white;
+    text-decoration: none;
 }
 
 img{
     width: 100%;
-    height: auto;
+    max-height:20vh;
+    object-fit: cover;
 }
 
 @mixin button{
     top: 563px;
     left: 8px;
-    width: 375px;
+    width: 90%;
     height: 50px;
     /* UI Properties */
     background: #6C6D80 0% 0% no-repeat padding-box;
