@@ -31,25 +31,29 @@ const router = createRouter({
     },
     
     {
-      path: '/plant/cryptomeria', 
-      name: 'cryptomeria', 
-      component: () => import('../views/PlantPage.vue'), 
+      path: '/plant',
+      name: 'plant',
+      component: () => import('../views/PlantPage.vue'),
+      props: true
     },
     
     {
-      path: '/julemarked',
-      name: 'julemarked',
-      component: () => import('../views/julemarked.vue')
+      path: '/calender/:startDate',
+      name: 'event',
+      component: () => import('../views/julemarked.vue'),
+      props: true
     },
     {
-      path: '/country',
+      path: '/areas/:id',
       name: 'country',
-      component: () => import('../views/CountryView.vue')
+      component: () => import('../views/CountryView.vue'),
+      props: true
     },
     {
-      path: '/plantoverview',
+      path: '/plants',
       name: 'plantoverview',
-      component: () => import('../views/PlantOverview.vue')
+      component: () => import('../views/PlantOverview.vue'),
+      props: true
     },
 
   ]
