@@ -1,4 +1,5 @@
 <template>
+    <router-link to="/plant/cryptomeria">
     <div class="plantContainer">
         <div class="plantBox">
             <div class="plantImg">
@@ -7,6 +8,7 @@
             <p class="plantText">Aucuba</p>
         </div>
     </div>
+</router-link>
 </template>
 <script setup></script>
 

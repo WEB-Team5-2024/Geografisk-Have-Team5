@@ -4,6 +4,7 @@
         <MapComponent/>
 
         <div class="menuContainer">
+            <router-link to="/country">
             <div class="menuItem" v-for="(item, index) in menuItems" :key="index">
                 <img :src="item.src" :alt="item.title + ' Image'">
                 <div class="details">
@@ -12,15 +13,19 @@
                 </div>
                 <div class="distanceContainer">
                     <p class="distance">{{ item.distance }}</p>
-                    <button @click="navigateTo(item)">Go</button>
+                    go
                 </div>
             </div>
+            </router-link>
         </div>
+        
     </div>
+
 </template>
 
 <script setup>
 import TopNav from '../components/TopNav.vue';
+
 import MapComponent from '../components/MapComponent.vue';
 
 const menuItems = [
@@ -31,17 +36,21 @@ const menuItems = [
 
 const navigateTo = (item) => {
     // Handle navigation logic her
-    console.log('Navigating to:', item.title);
+    console.log('Navigating to:');
 };
 </script>
 
 <style lang="scss">
 @import '@/styles/global.scss';
+p{
+    color:white;
+}
 
 .menuContainer {
     justify-content: center;
     margin-left:auto;
-    margin-right: auto;
+    margin-bottom: 100px;
+    gap:20px;
     .menuItem {
         display: flex;
         flex-direction: row;
@@ -50,10 +59,10 @@ const navigateTo = (item) => {
         background: #6C6D80 0% 0% no-repeat padding-box;
         box-shadow: 0px 3px 6px #00000029;
         border-radius: 10px;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin:20px;
         padding: 10px 10px 10px 10px;
         color: white;
+        
         img {
             height: 110px;
             width:110px;
