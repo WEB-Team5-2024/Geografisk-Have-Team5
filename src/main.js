@@ -9,6 +9,7 @@ import router from './router'
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
+
 const app = createApp(App)
 
 app.use(createPinia())
@@ -29,3 +30,5 @@ const firebaseConfig = {
 
 const firebaseapp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseapp);
+
+
