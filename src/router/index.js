@@ -45,7 +45,7 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/areas/:id',
+      path: '/areas',
       name: 'country',
       component: () => import('../views/CountryView.vue'),
       props: true
@@ -60,6 +60,12 @@ const router = createRouter({
       path: '/admin',
       name: 'admin',
       component: () => import('../views/AdminDashboard.vue')
+      
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
       
     },
 
