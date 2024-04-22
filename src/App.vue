@@ -17,6 +17,7 @@
 import { ref, onMounted } from 'vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import BottomNav from '@/components/bottomNav.vue';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
 
 const isLoading = ref(false);
 
@@ -27,8 +28,21 @@ const fetchData = () => {
     // 1. API logik skal insættes her, istedet for en setTimeOut funktion, skal der laves en async/await function.
     // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
     isLoading.value = false;
-  }, 2000);
+  }, 0);
 };
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if(user) {
+    if(window.location.pathname !== "/admin"){
+      window.location.pathname = "/admin";
+    }
+  } else {
+    if(
+      window.location.pathname !== "/login"
+    ) {
+    window.location.pathname = "/login";}
+  }
+})
 
 onMounted(() => {
   fetchData();

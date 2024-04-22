@@ -1,11 +1,4 @@
-import './assets/main.css'
-
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-
-import App from './App.vue'
-import router from './router'
-
+import { getAuth, signOut } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
@@ -21,14 +14,11 @@ const firebaseConfig = {
 
 
 const firebaseapp = initializeApp(firebaseConfig);
-const analytics = getAnalytics(firebaseapp);
-
-const app = createApp(App)
-
-app.use(createPinia())
-app.use(router)
-
-app.mount('#app')
-
-
+const auth = getAuth();
+export const signout = () => {signOut(auth).then(() => {
+  window.location.href="http://localhost:5173/"
+}).catch((error) => {
+  // An error happened.
+});
+}
 
