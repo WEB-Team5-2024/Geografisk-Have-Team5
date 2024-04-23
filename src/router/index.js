@@ -33,8 +33,8 @@ const router = createRouter({
     },
     
     {
-      path: '/plant',
-      name: 'plant',
+      path: '/plant/:id',
+      name: 'PlantPage',
       component: () => import('../views/PlantPage.vue'),
       props: true
     },

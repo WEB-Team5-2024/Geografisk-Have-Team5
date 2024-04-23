@@ -1,85 +1,233 @@
 <template>
     <div>
-        <TopNav/>
-        <MapComponent/>
+      <TopNav/>
 
-        <div class="menuContainer">
-            <router-link to="/country">
-            <div class="menuItem" v-for="(item, index) in menuItems" :key="index">
-                <img :src="item.src" :alt="item.title + ' Image'">
-                <div class="details">
-                    <h3>{{ item.title }}</h3>
-                    <p>{{ item.description }}</p>
-                </div>
-                <div class="distanceContainer">
-                    <p class="distance">{{ item.distance }}</p>
-                    go
-                </div>
+      <MapComponent :selected-area="selectedArea" />
+      <div class="menuContainer" v-if="!selectedArea">
+        <!-- Loop through areas only if none is selected -->
+        <div class="menuItem" v-for="area in areas" :key="area.id" @click="selectArea(area)">
+          <div class="imageContainer">
+            <img :src="area.imageURL" :alt="`${area.name} Image`" />
+          </div>
+          <div class="textContainer">
+            <div class="titleAndDistance">
+              <h3>{{ area.name }}</h3>
+              <p class="distanceText">{{ area.distance }} meter</p>
             </div>
-            </router-link>
+            <p>{{ area.description }}</p>
+          </div>
+          <i class="bi bi-arrow-right-circle"></i>
         </div>
-        
+      </div>
+      <div v-else class="selectedAreaContainer">
+        <!-- Display the selected area details -->
+        <div class="menuItem">
+          <div class="imageContainer">
+            <img :src="selectedArea.imageURL" :alt="`${selectedArea.name} Image`" />
+          </div>
+          <div class="textContainer">
+            <h3>{{ selectedArea.name }}</h3>
+            <p>{{ selectedArea.description }}</p>
+            <button @click="navigateToMoreInfo(selectedArea)">Flere informationer <i class="bi bi-arrow-right-circle"></i></button>
+               
+          </div>
+        </div>
+      </div>
     </div>
+  </template>
+  
 
-</template>
+
+  
 
 <script setup>
+import { onMounted, ref } from 'vue';
+import { db } from '@/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
 import TopNav from '../components/TopNav.vue';
-
 import MapComponent from '../components/MapComponent.vue';
 
-const menuItems = [
-    { src: '../src/assets/images/plantImages/Aucuba.png', title: 'Menu 1', description: 'Description for Menu 1', distance: '200 meter' },
-    { src: '../src/assets/images/plantImages/Daglilje.png', title: 'Menu 2', description: 'Description for Menu 2', distance: '300 meter' },
-    // Add more mockup data as needed
-];
 
-const navigateTo = (item) => {
-    // Handle navigation logic her
-    console.log('Navigating to:');
+const areas = ref([]);
+
+const { imageUrl, loadImage } = useFirebaseStorage();
+
+const areasCollectionRef = collection(db, 'areas');
+const selectedArea = ref(null);
+
+onMounted(async () => {
+  const querySnapshot = await getDocs(areasCollectionRef);
+
+  areas.value = await Promise.all(querySnapshot.docs.map(async (doc) => {
+    const data = doc.data();
+    
+    const filePath = `images/${data.name}.png`;
+    try {
+      
+      await loadImage(filePath);
+      
+    } catch (error) {
+      console.error('Error loading image:', error);
+    }
+    
+
+    return {
+      id: doc.id,
+      name: data.name,
+      description: data.description,
+      distance: data.distance,
+      imageURL: imageUrl.value, 
+    };
+  }));
+});
+
+
+const selectArea = (area) => {
+  selectedArea.value = area;
+};
+
+const navigateToMoreInfo = (area) => {
+  router.push({ name: 'AreaDetails', params: { areaId: area.id } });
 };
 </script>
 
+
 <style lang="scss">
 @import '@/styles/global.scss';
-p{
-    color:white;
-}
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .menuContainer {
-    justify-content: center;
-    margin-left:auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 10px;
     margin-bottom: 100px;
-    gap:20px;
+
     .menuItem {
         display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        height: 140px;
-        background: #6C6D80 0% 0% no-repeat padding-box;
-        box-shadow: 0px 3px 6px #00000029;
-        border-radius: 10px;
-        margin:20px;
-        padding: 10px 10px 10px 10px;
+        align-items: center;
+        background: $secondary-color;
+        box-shadow: $drop-shadow-light;
+        border-radius: $border-radius;
+        padding: 20px;
+        color: $font-color;
+        position: relative;
+
+        .imageContainer {
+            flex-shrink: 0;
+            width: 100px; 
+            height: 100px; 
+            border-radius: $border-radius;
+            overflow: hidden;
+            margin-right: 10px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .textContainer {
+            flex-grow: 1;
+
+            .titleAndDistance {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                
+                h3 {
+                    font-size: $medium-font-size;
+                    margin: 0;
+                    color: $font-color; 
+                    font-size: 16px; 
+                }
+
+                .distance {
+                    background: #FFFFFF;
+                    color: #000000;
+                    padding: 5px 10px;
+                    border-radius: 15px;
+                    font-size: 12px;
+                }
+            }
+
+            p {
+                font-size: $small-font-size;
+                margin: 0;
+                font-size: 12px; 
+                color: $font-color;
+            }
+        }
+
+        .bi-arrow-right-circle {
+            font-size: 30px; 
+            margin-left: auto; 
+            color: #FFF; 
+        }
+    }
+}
+.selectedAreaContainer {
+    display: flex;
+    gap: 15px;
+    margin: 10px;
+   
+
+  .menuItem {
+    display: flex;
+    align-items: center;
+    background: $secondary-color;
+    box-shadow: $drop-shadow-light;
+    border-radius: $border-radius;
+    padding: 20px;
+    color: $font-color;
+    position: relative;
+
+    .imageContainer {
+            padding: 5px;
+            flex-shrink: 0;
+            width: 100px; 
+            height: 100px; 
+            border-radius: $border-radius;
+            overflow: hidden;
+            margin-right: 10px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+    }
+
+    .textContainer {
+      h3 {
+        margin: 0;
+        color: $font-color;
+        font-size: $medium-font-size;
+      }
+
+      p {
+        margin: 0;
+        font-size: $small-font-size; 
+        color: $font-color; 
+      }
+
+      button {
+        margin-top: 20px;
+        display: flex;
+        padding: 10px 15px; 
+        border-radius: 15px; 
+        font-size: 1rem; 
+        background-color: #4A4C63; 
         color: white;
-        
-        img {
-            height: 110px;
-            width:110px;
-            object-fit: cover;
-        };
-        .distanceContainer {
-            padding-left: 10px;
-            max-width: 80px;
-            p{
-                font-size: 9pt;
-                font-weight: 200;
-            };
-            button{
-                margin-left: auto;
-                margin-right: auto;
-            };
-        };
-    };
-};
+        border: none; 
+        cursor: pointer; 
+        display: inline-block; 
+        text-align: center; 
+      }
+    }
+  }
+}
 </style>
+

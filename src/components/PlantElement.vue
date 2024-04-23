@@ -1,41 +1,77 @@
 <template>
-    <router-link to="/plant/cryptomeria">
-    <div class="plantContainer">
-        <div class="plantBox">
-            <div class="plantImg">
-                <img src="../assets/images/Aucuba.png" alt="Aucuba">
-            </div>
-            <p class="plantText">Aucuba</p>
-        </div>
+    <div class="plantContainer" @click="() => navigateToPlant(plant.id)">
+      <img :src="imageUrl" alt="Plant image" class="plantImage" />
+      <div class="plantTextContainer">
+        <p class="plantText">{{ plant.name }}</p>
+      </div>
     </div>
-</router-link>
-</template>
-<script setup></script>
+  </template>
+  
+  <script>
+  import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
+  import { useRouter } from 'vue-router';
+  
+  export default {
+  props: ['plant'],
+  setup(props) {
+    const router = useRouter();
+    const { imageUrl, loadImage } = useFirebaseStorage();
+    // Make sure props.plant.name has the correct file name corresponding to the image in Firebase Storage
+    loadImage(`images/${props.plant.name}.png`);
 
-<style scoped lang="scss" >
-@import '../styles/global.scss';
-
-
-
-.plantContainer{
-    max-width: 180px;
-    max-height: 73px;
-    margin: 10px;  
-}
-
-.plantBox{
+    
+    const navigateToPlant = () => {
+      // Ensure that you have an 'id' to work with
+      if (!props.plant.id) {
+        console.error('Plant ID is undefined or empty');
+        return;
+      }
+      router.push({ name: 'PlantPage', params: { id: props.plant.id } });
+    };
+    
+    return {
+      imageUrl,
+      navigateToPlant,
+    };
+  },
+};
+</script>
+  
+  
+  
+  <style scoped lang="scss">
+  @import '@/styles/global.scss';
+  
+  .plantContainer {
     display: flex;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: auto;
-    gap: 10px;
-    height: 100%;
-    padding-top: 7px;
-    color: $font-color;
-    background-color: $secondary-color;
-    border-radius: $border-radius;
-    box-shadow: $drop-shadow-light;
-}
+    border-radius: $border-radius; 
+    overflow: hidden;
+    box-shadow: $drop-shadow-light; 
+    margin: 10px 0;
+    width: 100%; 
+  }
+  
+  .plantImage {
+    
+    width: 50px; 
+    height: 50px; 
+    border-top-left-radius: 10px; 
+    border-top-right-radius: 10px; 
+    border-bottom-right-radius: 10px; 
+    border-bottom-left-radius: 10px; 
+    
+  }
+  
+  .plantTextContainer {
+    padding: 10px;
+    color: $font-color; 
+    
+  }
+  
+  .plantText {
 
-</style>
+    font-family: $primary-font; 
+  }
+  </style>
+  
