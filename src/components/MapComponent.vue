@@ -16,7 +16,8 @@ const setup = () => {
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '© OpenStreetMap'
+    attribution: '© OpenStreetMap',
+    tileSize: 512,
 }).addTo(map);
     });
     
@@ -33,4 +34,5 @@ setup();
         overflow: hidden;
         
     }    
+   
 </style>
