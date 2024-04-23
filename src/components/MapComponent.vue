@@ -1,21 +1,36 @@
 <template>
-    <div>
-        <p>Dette er placeholder for the-soon-to-be google maps api</p>
-    </div>
+    <div ref="map" id="map"></div>
 </template>
+
 <script setup>
-    console.log('mapview')
-</script>
-<style lang="scss" scoped>
-div{
-    border-style: dashed;
-    justify-content: center;
-    height: 480px;
-    p{
-        padding: 70px 0 0 0;
-        height: 100% ;
-        text-align: center;
-    }
-}
+import { ref, onMounted } from 'vue'; // Import ref and onMounted
+
+import L from 'leaflet';
+
+const mapContainer = ref(null); // Create a ref for the map container
+
+
+const setup = () => {
+    onMounted(() => {
+        var map = L.map('map').fitWorld();
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+    });
     
+    return { mapContainer }; // Return the map container ref
+};
+
+setup();
+</script>
+
+<style lang="scss" scoped>
+    #map{
+        max-height: 40vh;
+        width: 100vw;
+        overflow: hidden;
+        
+    }    
 </style>

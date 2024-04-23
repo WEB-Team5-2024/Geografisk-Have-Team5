@@ -60,13 +60,15 @@
           </ul>
         </div>
       </section>
-  
+      <Button @click="signout()">Sign out</Button>
     </div>
   </template>
   
   <script setup>
   import { reactive, ref } from 'vue';
   import TopNav from '@/components/TopNav.vue';
+  import {signout} from '../composables/Logout';
+
   
   // Test Sample data for plants, events, locations
   const plants = ref([{ id: 'p1', name: 'Daisy', description: 'A beautiful flower' }]);
@@ -115,9 +117,6 @@
   const resetEventForm = () => { Object.assign(eventData, { id: null, title: '', date: '', description: '', image: null }); isEditingEvent.value = false; };
   const resetLocationForm = () => { Object.assign(locationData, { id: null, name: '', description: '', image: null }); isEditingLocation.value = false; };
   </script>
-  
- 
-  
   
   <style scoped lang="scss">
   @import '../styles/global.scss';
