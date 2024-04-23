@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { getAuth } from 'firebase/auth';
 import HomePage from '../views/HomePage.vue';
 import AdminPage from '@/views/AdminDashboard.vue';
 
@@ -58,15 +59,29 @@ const router = createRouter({
     },
     {
       path: '/admin',
-      name: 'admin',
-      component: () => import('../views/AdminDashboard.vue')
+      name: 'Admin',
+      component: () => import('../views/AdminDashboard.vue'),
       
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/LoginView.vue')
-      
+      component: () => import('../views/LoginView.vue'),
+     /*
+      beforeEnter: (to, from, next) => {
+        const auth = getAuth();
+        
+        if (auth.currentUser ) {
+
+          next('/admin');
+          console.log('not loggedin but loggin tho')
+        } else {
+          next('/login');
+          console.log('not loggedin')
+        }
+        
+      }
+      */
     },
 
   ]

@@ -17,6 +17,8 @@
 import { ref, onMounted } from 'vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import BottomNav from '@/components/bottomNav.vue';
+import { onAuthStateChanged, getAuth } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
 const isLoading = ref(false);
 
@@ -29,6 +31,35 @@ const fetchData = () => {
     isLoading.value = false;
   }, 0);
 };
+
+const router = useRouter();
+const auth = getAuth();
+
+onAuthStateChanged(auth, (user) => {
+  if(user) {
+    if(router.currentRoute.value.path !== "/admin"){
+      router.push("/admin");
+    }
+  } else {
+    if(router.currentRoute.value.path !== "/login") {
+      router.push("/login");
+    }
+  }
+})
+
+// const auth = getAuth();
+// onAuthStateChanged(auth, (user) => {
+//   if(user) {
+//     if(window.location.pathname !== "/admin"){
+//       window.location.pathname = "/admin";
+//     }
+//   } else {
+//     if(
+//       window.location.pathname !== "/login"
+//     ) {
+//     window.location.pathname = "/login";}
+//   }
+// })
 
 onMounted(() => {
   fetchData();

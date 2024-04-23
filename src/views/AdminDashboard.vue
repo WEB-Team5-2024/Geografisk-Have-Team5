@@ -60,13 +60,14 @@
           </ul>
         </div>
       </section>
-  
+      <Button @click="signout()">Sign out</Button>
     </div>
   </template>
   
   <script setup>
   import { reactive, ref } from 'vue';
   import TopNav from '@/components/TopNav.vue';
+  import {signout} from '../composables/Logout'
   
   // Test Sample data for plants, events, locations
   const plants = ref([{ id: 'p1', name: 'Daisy', description: 'A beautiful flower' }]);
@@ -126,6 +127,7 @@
     max-width: 800px;
     margin: auto;
     padding: 1rem;
+    padding-bottom: 1000px;
   
     .admin-header {
       text-align: center;
