@@ -27,7 +27,7 @@ const fetchData = () => {
     // 1. API logik skal insættes her, istedet for en setTimeOut funktion, skal der laves en async/await function.
     // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
     isLoading.value = false;
-  }, 2000);
+  }, 0);
 };
 
 onMounted(() => {
