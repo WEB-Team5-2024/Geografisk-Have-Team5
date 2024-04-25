@@ -42,7 +42,7 @@ onAuthStateChanged(auth, (user) => {
     }
   } else {
     if(router.currentRoute.value.path !== "/login") {
-      router.push("/login");
+      //router.push("/login");
     }
   }
 })
