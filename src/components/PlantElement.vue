@@ -16,12 +16,12 @@
   setup(props) {
     const router = useRouter();
     const { imageUrl, loadImage } = useFirebaseStorage();
-    // Make sure props.plant.name has the correct file name corresponding to the image in Firebase Storage
+    /
     loadImage(`images/${props.plant.name}.png`);
 
     
     const navigateToPlant = () => {
-      // Ensure that you have an 'id' to work with
+       
       if (!props.plant.id) {
         console.error('Plant ID is undefined or empty');
         return;

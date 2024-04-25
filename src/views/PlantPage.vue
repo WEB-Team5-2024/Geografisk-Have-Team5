@@ -2,7 +2,7 @@
 <template>
   <div class="page-container">
     <header class="header">
-      <img :src="headerImageUrl" alt="Plant banner" class="plant-banner">
+      <img :src="headerImageUrl" alt="Plant banner" class="plant-banner"'>'
       <div class="plant-name">
         <h2>{{ plantDetails?.name}}</h2>
       </div>
