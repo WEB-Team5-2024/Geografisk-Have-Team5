@@ -38,7 +38,7 @@ const auth = getAuth();
 onAuthStateChanged(auth, (user) => {
   if(user) {
     if(router.currentRoute.value.path !== "/admin"){
-      router.push("/admin");
+      // router.push("/admin");
     }
   } else {
     if(router.currentRoute.value.path !== "/login") {
