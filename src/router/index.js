@@ -27,7 +27,7 @@ const router = createRouter({
       component: () => import('../views/CalenderView.vue'),
     },
     {
-      path: '/404',
+      path: '/:pathMatch(.*)*',
       name: '404',
       component: () => import('../views/404View.vue'),
     },
