@@ -16,7 +16,8 @@
   setup(props) {
     const router = useRouter();
     const { imageUrl, loadImage } = useFirebaseStorage();
-    /
+    console.log(props.plant)
+    
     loadImage(`images/${props.plant.name}.png`);
 
     

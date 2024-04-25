@@ -47,7 +47,6 @@ onAuthStateChanged(auth, (user) => {
   }
 })
 
-// const auth = getAuth();
 // onAuthStateChanged(auth, (user) => {
 //   if(user) {
 //     if(window.location.pathname !== "/admin"){
