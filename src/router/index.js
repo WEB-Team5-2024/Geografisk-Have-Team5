@@ -46,13 +46,13 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/areas',
-      name: 'country',
+      path: '/areas/:id',
+      name: 'countryView',
       component: () => import('../views/CountryView.vue'),
       props: true
     },
     {
-      path: '/plants',
+      path: '/plants/:origin',
       name: 'plantoverview',
       component: () => import('../views/PlantOverview.vue'),
       props: true

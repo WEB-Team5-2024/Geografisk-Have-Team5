@@ -2,15 +2,18 @@
     <TopNav/>
     <div>
         <div class="container">
-            <img :src="imageUrl" alt="image from firebase">
-            <h2 class="centered">Japan</h2>
-        </div>
-        <p>
-            Japan byder på en mangfoldig plantenatur, der spænder fra de skovklædte bjerge i nord til de frodige regnskove i syd. I nord findes nåletræer som gran og fyr, mens de subtropiske områder i syd er hjemsted for eksotiske træer, buske og blomster. Bambus er udbredt, og sakura (kirsebærblomster) er en ikonisk del af japansk kultur. Den rige plantenatur afspejler Japans kulturelle arv og forbindelse til naturen. Japan's planteliv udgør også et fundament for landets økologiske balance og støtter en rig biodiversitet af både flora og fauna. Denne dybe forbindelse til naturen er en central del af japansk identitet og tradition, og den afspejler sig i alt fra kunst og litteratur til dagliglivet.
-        </p>
+        <img :src="imageUrl" alt="Country image">
+        <h2 class="centered">{{ country.name }}</h2>
+    </div>
+    <p>{{ country.description }}</p>
         <div class="buttonContainer">
         <button>Afspil lydbog</button>
-        <button><RouterLink to="/plantoverview">Liste over planter</RouterLink></button>
+        <button v-if="country.name">
+      <!-- Ensure country.name is used for origin parameter -->
+      <RouterLink :to="{ name: 'plantoverview', params: { origin: country.name } }">
+        Liste over planter
+      </RouterLink>
+    </button>
         </div>
         <div>
             <audio controls>
@@ -23,15 +26,50 @@
 
 <script setup>
     import TopNav from '@/components/TopNav.vue';
-
-    //importerer composable/custom hook:
+    import { ref, onMounted } from 'vue';
     import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
+    import { useRoute } from 'vue-router';
+    import { db } from '@/firebase'; 
+    import { doc, getDoc } from 'firebase/firestore';
     import { useFirebaseAudio } from '@/composables/useFirebaseAudio';
-    const { imageUrl } = useFirebaseStorage('gs://geografisk-have-webteam5.appspot.com/images/Yucca-flaccida-palmelilje-1024x683.png');
+    import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
+
+
     const { audioUrl } = useFirebaseAudio('https://firebasestorage.googleapis.com/v0/b/geografisk-have-webteam5.appspot.com/o/audio%2Fsample.mp3?alt=media&token=994b95b0-0b9e-484e-baba-26d5410475db')
+    const route = useRoute();
+    const country = ref({ name: '', description: '' });
+    const { imageUrl, loadImage } = useFirebaseStorage();
+    const areaId = route.params.id; 
+
+    // Firestore document fetch
+const fetchCountryData = async (id) => {
+  try {
+    const docRef = doc(db, 'areas', id);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      // Update country data
+      country.value = docSnap.data();
+
+      // Now load the image using the country name
+      const imagePath = `images/${country.value.name}.png`;
+      loadImage(imagePath); // This will update the imageUrl ref
+    } else {
+      console.log("No such document!");
+    }
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+};
+onMounted(() => {
+  fetchCountryData(areaId);
+});
+
+// Example usage of loading an audio file (you'd replace the URL with your Firestore data)
+//loadAudio('audio/sample.mp3'); // This will update the audioUrl ref
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
     @import '@/styles/global.scss';
 
     a{
@@ -53,6 +91,7 @@
         display: flex;
         flex-direction: column;
         gap: 30px;
+        margin-top: 50px;
     }
     p{
         color: black;

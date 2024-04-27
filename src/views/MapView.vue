@@ -40,16 +40,17 @@
 
   
 
-<script setup>
-import { onMounted, ref } from 'vue';
-import { db } from '@/firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
-import TopNav from '../components/TopNav.vue';
-import MapComponent from '../components/MapComponent.vue';
-
+  <script setup>
+  import { onMounted, ref } from 'vue';
+  import { useRouter } from 'vue-router'; // Ensure useRouter is imported
+  import { db } from '@/firebase';
+  import { collection, getDocs } from 'firebase/firestore';
+  import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
+  import TopNav from '../components/TopNav.vue';
+  import MapComponent from '../components/MapComponent.vue';
 
 const areas = ref([]);
+const router = useRouter(); 
 
 const { imageUrl, loadImage } = useFirebaseStorage();
 
@@ -88,7 +89,7 @@ const selectArea = (area) => {
 };
 
 const navigateToMoreInfo = (area) => {
-  router.push({ name: 'AreaDetails', params: { areaId: area.id } });
+  router.push({ name: 'countryView', params: { id: area.id } });
 };
 </script>
 
