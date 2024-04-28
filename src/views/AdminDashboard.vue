@@ -12,7 +12,7 @@
           <option value="">Select Area</option>
           <option v-for="area in areas" :key="area.id" :value="area.name">{{ area.name }}</option>
         </select>
-        <textarea v-model="plantData.description" placeholder="Plant Description" required></textarea>
+        <quill-editor v-model="plantData.description" placeholder="Plant Description" required />
         <input type="file" @change="handlePlantImageChange" required />
         <button type="submit">{{ isEditingPlant ? 'Update Plant' : 'Add Plant' }}</button>
       </form>
@@ -34,7 +34,8 @@
       <form @submit.prevent="isEditingEvent ? updateEvent() : submitEvent()">
         <input type="text" v-model="eventData.title" placeholder="Event Title" required />
         <input type="date" v-model="eventData.date" required />
-        <textarea v-model="eventData.description" placeholder="Event Description" required></textarea>
+        <quill-editor v-model="eventData.description" placeholder="Event Description" required />
+
         <input type="file" @change="handleEventImageChange" required />
         <button type="submit">{{ isEditingEvent ? 'Update Event' : 'Add Event' }}</button>
       </form>
@@ -57,6 +58,10 @@
 
 
 <script setup>
+import { QuillEditor } from '@vueup/vue-quill';
+import 'quill/dist/quill.core.css'; // import quill core styles
+import 'quill/dist/quill.snow.css'; // import quill theme styles
+import 'quill/dist/quill.bubble.css'; // (optional) import bubble theme styles
 import { reactive, ref, onMounted } from 'vue';
 import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
