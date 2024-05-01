@@ -1,17 +1,16 @@
-// PlantPage.vue
 <template>
   <div class="page-container">
     <header class="header">
       <img :src="headerImageUrl" alt="Plant banner" class="plant-banner">
       <div class="plant-name">
-        <h2>{{ plantDetails?.name}}</h2>
+        <h2>{{ plantDetails?.name }}</h2>
       </div>
     </header>
     <main class="content">
       <section class="plant-details">
-        <article v-for="section in plantSections" :key="section.id">
-          <h3>{{ section.title }}</h3>
-          <p>{{ section.description }}</p>
+        <!-- Directly render the description without iterating over sections -->
+        <article>
+          <p v-html="plantDetails?.description || 'No description available'"></p>
         </article>
       </section>
     </main>
@@ -29,12 +28,10 @@ export default {
   setup() {
     const route = useRoute();
     const plantDetails = ref(null);
-    const plantSections = ref([]);
     const { imageUrl, loadImage } = useFirebaseStorage();
 
     onMounted(async () => {
       const plantId = route.params.id;
-      
       if (!plantId) {
         console.error('Plant ID is not defined');
         return;
@@ -53,49 +50,40 @@ export default {
       }
     });
 
-    return { plantDetails, plantSections, headerImageUrl: imageUrl };
+    return { plantDetails, headerImageUrl: imageUrl };
   },
 };
 </script>
 
+<style scoped lang="scss">
+@import "@/styles/global.scss";
 
-  <style scoped lang="scss">
-  @import "@/styles/global.scss";
-
-  .page-container {
-    .header {
-      position: relative;
-      text-align: center;
-      .plant-banner {
-        width: 100%;
-        height: auto;
-      }
-      .plant-name {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: $extra-large-font-size;
-        font-weight: $bold-weight;
-        padding: 0.5rem 1rem; 
-      }
+.page-container {
+  .header {
+    position: relative;
+    text-align: center;
+    .plant-banner {
+      width: 100%;
+      height: auto;
     }
+    .plant-name {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: $extra-large-font-size;
+      font-weight: $bold-weight;
+      padding: 0.5rem 1rem; 
+    }
+  }
 
   .content {
     .plant-details {
-        margin-top: 50px;
-        margin-left: 1rem;
+      margin-top: 50px;
+      margin-left: 1rem;
       
-
       article {
-        h3 {
-          color: black;
-          font-size: $large-font-size;
-          font-weight: $bold-weight;
-          margin-bottom: 1rem;
-        }
-
         p {
           color: black; 
           font-size: $medium-font-size;
@@ -105,4 +93,4 @@ export default {
     }
   }
 }
-  </style>
+</style>

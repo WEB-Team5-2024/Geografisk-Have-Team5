@@ -4,7 +4,7 @@
     <h1 class="admin-header">Admin Dashboard</h1>
 
     <!-- Plant Management Section -->
-    <section class="admin-section">
+    <section class="admin-section" v-if="editor">
       <h2>{{ isEditingPlant ? 'Edit Plant' : 'Add New Plant' }}</h2>
       <form @submit.prevent="isEditingPlant ? updatePlant() : submitPlant()">
         <input type="text" v-model="plantData.name" placeholder="Plant Name" required />
@@ -12,71 +12,162 @@
           <option value="">Select Area</option>
           <option v-for="area in areas" :key="area.id" :value="area.name">{{ area.name }}</option>
         </select>
-        <quill-editor v-model="plantData.description" placeholder="Plant Description" required />
+
+        <!-- Editor Toolbar for Plant Description -->
+        <div class="editor-toolbar">
+          <button @click="toggleBold(editor)">Bold</button>
+          
+          <button @click="toggleUnderline(editor)">Underline</button>
+          <button @click="toggleBulletList(editor)">Bullet List</button>
+          <button @click="() => setTextAlign(editor, 'left')">Left</button>
+          <button @click="() => setTextAlign(editor, 'center')">Center</button>
+          <button @click="() => setTextAlign(editor, 'right')">Right</button>
+        </div>
+        <editor-content :editor="editor" />
+        <textarea v-model="plantData.description" placeholder="Start typing description..."></textarea>
         <input type="file" @change="handlePlantImageChange" required />
-        <button type="submit">{{ isEditingPlant ? 'Update Plant' : 'Add Plant' }}</button>
+        <button class="submit-btn">{{ isEditingPlant ? 'Update Plant' : 'Add Plant' }}</button>
       </form>
       <div v-if="!isEditingPlant">
         <h3>Existing Plants</h3>
         <ul class="items-list">
           <li v-for="plant in plants" :key="plant.id">
-            {{ plant.name }} - 
-            <button @click="editPlant(plant)">Edit</button>
-            <button @click="deletePlant(plant.id)">Delete</button>
+            {{ plant.name }}
+            <div class="button-group">
+              <button @click="editPlant(plant)">Edit</button>
+              <button @click="deletePlant(plant.id)">Delete</button>
+            </div>
           </li>
         </ul>
       </div>
     </section>
 
     <!-- Event Management Section -->
-    <section class="admin-section">
+    <section class="admin-section" v-if="eventEditor">
       <h2>{{ isEditingEvent ? 'Edit Event' : 'Add New Event' }}</h2>
       <form @submit.prevent="isEditingEvent ? updateEvent() : submitEvent()">
         <input type="text" v-model="eventData.title" placeholder="Event Title" required />
         <input type="date" v-model="eventData.date" required />
-        <quill-editor v-model="eventData.description" placeholder="Event Description" required />
 
+        <!-- Editor Toolbar for Event Description -->
+        <div class="editor-toolbar">
+          <button @click="toggleBold(eventEditor)">Bold</button>
+      
+          <button @click="toggleUnderline(eventEditor)">Underline</button>
+          <button @click="toggleBulletList(eventEditor)">Bullet List</button>
+          <button @click="() => setTextAlign(eventEditor, 'left')">Left</button>
+          <button @click="() => setTextAlign(eventEditor, 'center')">Center</button>
+          <button @click="() => setTextAlign(eventEditor, 'right')">Right</button>
+        </div>
+        <editor-content :editor="eventEditor" />
+        <textarea v-model="eventData.description" placeholder="Start typing description..."></textarea>
         <input type="file" @change="handleEventImageChange" required />
-        <button type="submit">{{ isEditingEvent ? 'Update Event' : 'Add Event' }}</button>
+        <button class="submit-btn">{{ isEditingEvent ? 'Update Event' : 'Add Event' }}</button>
       </form>
       <div v-if="!isEditingEvent">
         <h3>Existing Events</h3>
         <ul class="items-list">
           <li v-for="event in events" :key="event.id">
-            {{ event.title }} - 
-            <button @click="editEvent(event)">Edit</button>
-            <button @click="deleteEvent(event.id)">Delete</button>
+            {{ event.title }}
+            <div class="button-group">
+              <button @click="editEvent(event)">Edit</button>
+              <button @click="deleteEvent(event.id)">Delete</button>
+            </div>
           </li>
         </ul>
       </div>
     </section>
 
-    <Button class="signout-button" @click="signout()">Sign out</Button>
+    <button class="signout-button" @click="signout()">Sign out</Button>
   </div>
 </template>
 
 
-
 <script setup>
-import { QuillEditor } from '@vueup/vue-quill';
-import 'quill/dist/quill.core.css'; // import quill core styles
-import 'quill/dist/quill.snow.css'; // import quill theme styles
-import 'quill/dist/quill.bubble.css'; // (optional) import bubble theme styles
-import { reactive, ref, onMounted } from 'vue';
+import { ref, onMounted, reactive } from 'vue';
+import { useEditor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from '@tiptap/starter-kit';
+import TextStyle from '@tiptap/extension-text-style';
+import Bold from '@tiptap/extension-bold';
+import Italic from '@tiptap/extension-italic';
+import Underline from '@tiptap/extension-underline';
+import Heading from '@tiptap/extension-heading';
+import BulletList from '@tiptap/extension-bullet-list';
+import ListItem from '@tiptap/extension-list-item';
+import TextAlign from '@tiptap/extension-text-align';
 import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebase'; 
+import { storage } from '@/firebase';
 import TopNav from '@/components/TopNav.vue';
 import { signout } from '../composables/Logout';
 
+// Initialize Firestore and other states
 const db = getFirestore();
 const areas = ref([]);
 const plants = ref([]);
 const events = ref([]);
 const isEditingPlant = ref(false);
 const isEditingEvent = ref(false);
-const plantData = reactive({ id: null, name: '', origin: '', description: '', image: null, imageURL: '' });
-const eventData = reactive({ id: null, title: '', date: '', description: '', image: null, imageURL: '' });
+
+// Reactive data for plant and event details
+const plantData = reactive({
+  id: null,
+  name: '',
+  origin: '',
+  description: '',
+  image: null,
+  imageURL: ''
+});
+const eventData = reactive({
+  id: null,
+  title: '',
+  date: '',
+  description: '',
+  image: null,
+  imageURL: ''
+});
+
+// Setup TipTap editor for plants
+const editor = useEditor({
+  extensions: [
+    StarterKit,
+    TextStyle,
+    Bold,
+    Italic,
+    Underline,
+    Heading,
+    BulletList,
+    ListItem,
+    TextAlign.configure({
+      types: ['heading', 'paragraph']
+    }),
+  ],
+  content: '<p>Start typing discription...</p>',
+  onUpdate: ({ editor }) => {
+    plantData.description = editor.getHTML();
+  }
+});
+
+// Setup TipTap editor for events
+const eventEditor = useEditor({
+  extensions: [
+    StarterKit,
+    TextStyle,
+    Bold,
+    Italic,
+    Underline,
+    Heading,
+    BulletList,
+    ListItem,
+    TextAlign.configure({
+      types: ['heading', 'paragraph']
+    }),
+  ],
+  content: '<p>Start typing...</p>',
+  onUpdate: ({ editor }) => {
+    eventData.description = editor.getHTML();
+  }
+});
 
 onMounted(async () => {
   await loadInitialData();
@@ -128,20 +219,24 @@ const handleEventImageChange = async (event) => {
   }
 };
 
-// CRUD Operations for Plants
+// CRUD Operations for Plants and Events
 const submitPlant = async () => {
-  if (!plantData) {
-    console.error('No image URL provided.');
+  if (!plantData.description) {
+    console.error('Description is missing.');
     return;
   }
-  const newDoc = await addDoc(collection(db, 'plants'), {
-    name: plantData.name,
-    origin: plantData.origin,
-    description: plantData.description,
-    imageURL: plantData.imageURL
-  });
-  plants.value.push({ id: newDoc.id, ...plantData });
-  resetPlantForm();
+  try {
+    const newDoc = await addDoc(collection(db, 'plants'), {
+      name: plantData.name,
+      origin: plantData.origin,
+      description: plantData.description,
+      imageURL: plantData.imageURL
+    });
+    plants.value.push({ id: newDoc.id, ...plantData });
+    resetPlantForm();
+  } catch (error) {
+    console.error("Failed to submit plant:", error);
+  }
 };
 
 const updatePlant = async () => {
@@ -154,7 +249,7 @@ const updatePlant = async () => {
   });
   const index = plants.value.findIndex(p => p.id === plantData.id);
   if (index !== -1) {
-    plants.value[index] = {...plantData};
+    plants.value[index] = { ...plantData };
   }
   resetPlantForm();
 };
@@ -176,8 +271,8 @@ const resetPlantForm = () => {
 
 // CRUD Operations for Events
 const submitEvent = async () => {
-  if (!eventData) {
-    console.error('No image URL provided.');
+  if (!eventData.description) {
+    console.error('Description is missing.');
     return;
   }
   const newDoc = await addDoc(collection(db, 'events'), {
@@ -200,7 +295,7 @@ const updateEvent = async () => {
   });
   const index = events.value.findIndex(e => e.id === eventData.id);
   if (index !== -1) {
-    events.value[index] = {...eventData};
+    events.value[index] = { ...eventData };
   }
   resetEventForm();
 };
@@ -219,109 +314,175 @@ const resetEventForm = () => {
   Object.assign(eventData, { id: null, title: '', date: '', description: '', image: null, imageURL: '' });
   isEditingEvent.value = false;
 };
+
+// TipTap editor methods
+const toggleBold = (editor) => {
+  if (editor) {
+    editor.chain().focus().toggleBold().run();
+    isBoldActive.value = editor.isActive('bold');
+  }
+};
+
+const toggleItalic = (editor) => {
+  if (editor) {
+    editor.chain().focus().toggleItalic().run();
+    isItalicActive.value = editor.isActive('italic');
+  }
+};
+
+const toggleUnderline = (editor) => {
+  if (editor) {
+    editor.chain().focus().toggleUnderline().run();
+    isUnderlineActive.value = editor.isActive('underline');
+  }
+};
+
+const toggleBulletList = (editor) => {
+  if (editor) {
+    editor.chain().focus().toggleBulletList().run();
+    isBulletListActive.value = editor.isActive('bulletList');
+  }
+};
+
+const setTextAlign = (editor, align) => {
+  if (editor) {
+    editor.chain().focus().setTextAlign(align).run();
+  }
+};
+
+const isTextAlignActive = (align) => {
+  if (editor && typeof editor.isActive === 'function') {
+    return editor.isActive('textAlign', { textAlign: align });
+  } else {
+    return false;
+  }
+};
+
+const isBoldActive = ref(false);
+const isItalicActive = ref(false);
+const isUnderlineActive = ref(false);
+const isBulletListActive = ref(false);
+
 </script>
 
+<style scoped lang="scss">
+@import '../styles/global.scss';
 
-  
- 
-  
-  
-  <style scoped lang="scss">
-  @import '../styles/global.scss';
-  
-  .admin-container {
-    max-width: 800px;
-    margin: auto;
-    padding: 1rem;
-    padding-bottom: 1000px;
-  
-    .admin-header {
-      text-align: center;
-      margin-bottom: 2rem;
+.admin-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  margin-bottom: 200px;
+
+  .admin-header {
+    text-align: center;
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  .admin-section {
+    margin-bottom: 2rem;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
     }
-  
-    .admin-section {
-      background-color: #f3f3f3;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 2rem;
-  
-      h2 {
-        margin-bottom: 1.5rem;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      input, select {
+        padding: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
       }
-  
-      form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-  
-        input[type="text"],
-        input[type="date"],
-        input[type="file"],
-        textarea {
-          width: 100%;
-          padding: 0.5rem;
-          border-radius: 4px;
-          border: 1px solid #ccc;
-        }
-  
-        button {
-          padding: 0.5rem 1rem;
-          background-color: $primary-color;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          transition: background-color 0.3s;
-  
-          &:hover {
-            background-color: darken($primary-color, 10%);
-          }
+
+      .submit-btn {
+        background-color: $primary-color;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        &:hover {
+          background-color: darken($primary-color, 10%);
         }
       }
-  
-      .items-list {
-        list-style: none;
-        padding: 0;
-        li {
+    }
+
+    .items-list {
+      li {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        margin-bottom: 0.5rem;
-
-        .edit-button, .delete-button {
-        
-          font-weight: $bold-weight;
-          margin: 0 0.5rem;
-          text-align: center;
-          align-items: center;
-
-          &:hover {
-            background-color: darken($secondary-color, 10%);
+        align-items: center;
+        margin-top: 10px;
+        .button-group {
+          display: flex;
+          gap: 5px;
+          button {
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            &:first-child {
+              background-color: $primary-color;
+              color: white;
+            }
+            &:last-child {
+              background-color: #F44336;
+              color: white;
+            }
+            &:hover {
+              opacity: 0.8;
+            }
           }
-        }
-
-        .delete-button {
-          background-color: $btn-color;
         }
       }
     }
   }
 
   .signout-button {
-    @include button;
     display: block;
     width: 100px;
-    margin: 2rem auto;
+    padding: 10px;
+    margin: 20px auto;
+    background-color: $primary-color;
+    color: white;
     text-align: center;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
-
     &:hover {
-      background-color: darken($btn-color, 10%);
+      background-color: darken(#FF5722, 10%);
+    }
+  }
+
+  .editor-toolbar {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+    margin-bottom: 10px;
+    font-size: small;
+
+    button {
+      font-size: smaller;
+      
+      padding: 10px;
+      border: none;
+      background-color: #E0E0E0;
+      border-radius: 4px;
+      cursor: pointer;
+      &.is-active {
+        background-color: #BDBDBD;
+      }
     }
   }
 }
-  </style>
-  
+</style>

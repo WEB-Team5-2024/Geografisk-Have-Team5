@@ -1,17 +1,38 @@
 <template>
     <div class="julemarkedProgram">
-    <div class="julemarkedProgram-titel">
+      <div class="julemarkedProgram-titel">
         <p>Program</p>
+      </div>
+      <div class="julemarkedProgram-beskrivelse">
+        <p>{{ programDescription }}</p>
+      </div>
     </div>
-    <div class="julemarkedProgram-beskrivelse">
-        <p>Kl. 10-15: Boderne med bæredygtige ting og sager er åbne. <br>Kl. 10-15: Lav julepynt i have- og naturmaterialer (selvkørende workshop). <br>Kl. 10-12: Dus med dyrene. Følg med dyrepasseren rundt til havens søde dyr. <br>Kl. 10-15: Café Lykkefund serverer Gløgg, æbleskiver og andre lækkerier på Væksthustorvet. Pandekager på Hjul serverer vegetariske madpandekager og pandekager med sødt fyld. <br>Kl. 10.30-12.30 (kun søndag): Bind en adventskrans med et mere blomstrende look. <br>Kl. 11-14: Mød Julemanden og få et billede sammen med ham. <br>Kl. 11,12,13 og 14: Julemanden læser juleeventyr i regnvejrshytten (15. minutter). <br>Kl. 11-14.30: Live musik med julemusikanter med harmonika og violin på Væksthustorvet. <br>Kl. 12-14: Bålhygge med snobrød og popcorn ved Café Lykkefund. <br>Kl. 15-16 (kun lørdag): Julebanko for store og små med præmier. 25 kr./plade. I Væksthuset.</p>
-    </div>
-    </div>
-</template>
+  </template>
   
-<script setup>
-
-</script>
+  <script setup>
+  import { ref, onMounted } from 'vue';
+  import { db } from '@/firebase';
+  import { doc, getDoc } from 'firebase/firestore';
+  
+  const programDescription = ref('');
+  
+  onMounted(async () => {
+    try {
+      const eventDocRef = doc(db, 'events', 'xp15vc8P4mqdl0iM2t3J'); // Replace 'xp15vc8P4mqdl0iM2t3J' with the actual document ID
+      const eventDocSnap = await getDoc(eventDocRef);
+  
+      if (eventDocSnap.exists()) {
+        const eventData = eventDocSnap.data();
+        programDescription.value = eventData.programDescription || 'No program description available';
+      } else {
+        console.error('Event document does not exist');
+      }
+    } catch (error) {
+      console.error('Error fetching event data:', error);
+    }
+  });
+  </script>
+  
 <style lang="scss" scoped>
 @import '../styles/global.scss';
 .julemarkedProgram{
