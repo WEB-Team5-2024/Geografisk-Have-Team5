@@ -15,16 +15,35 @@
 
         <!-- Editor Toolbar for Plant Description -->
         <div class="editor-toolbar">
-          <button @click="toggleBold(editor)">Bold</button>
-          
-          <button @click="toggleUnderline(editor)">Underline</button>
-          <button @click="toggleBulletList(editor)">Bullet List</button>
-          <button @click="() => setTextAlign(editor, 'left')">Left</button>
-          <button @click="() => setTextAlign(editor, 'center')">Center</button>
-          <button @click="() => setTextAlign(editor, 'right')">Right</button>
+          <div class="style-dropdown">
+            <select @change="setStyle(editor, $event.target.value)">
+              <option value="">Style</option>
+              <option value="bold">Bold</option>
+              <option value="italic">Italic</option>
+              <option value="underline">Underline</option>
+            </select>
+          </div>
+          <div class="align-dropdown">
+            <select @change="setTextAlign(editor, $event.target.value)">
+              <option value="">Align</option>
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <select @change="setHeadingLevel(editor, $event.target.value)">
+            <option value="">Paragraph</option> <!-- Reset to paragraph -->
+            <option value="">Heading</option>
+            <option value="1">Heading 1</option>
+            <option value="2">Heading 2</option>
+            <option value="3">Heading 3</option>
+            <option value="4">Heading 4</option>
+            <option value="5">Heading 5</option>
+          </select>
         </div>
         <editor-content :editor="editor" />
-        <textarea v-model="plantData.description" placeholder="Start typing description..."></textarea>
+        
+        <textarea v-model="plantData.description" placeholder="palnt description..."></textarea>
         <input type="file" @change="handlePlantImageChange" required />
         <button class="submit-btn">{{ isEditingPlant ? 'Update Plant' : 'Add Plant' }}</button>
       </form>
@@ -48,19 +67,38 @@
       <form @submit.prevent="isEditingEvent ? updateEvent() : submitEvent()">
         <input type="text" v-model="eventData.title" placeholder="Event Title" required />
         <input type="date" v-model="eventData.date" required />
+        <input type="text" v-model="eventData.program" placeholder="Program" required />
 
         <!-- Editor Toolbar for Event Description -->
         <div class="editor-toolbar">
-          <button @click="toggleBold(eventEditor)">Bold</button>
-      
-          <button @click="toggleUnderline(eventEditor)">Underline</button>
-          <button @click="toggleBulletList(eventEditor)">Bullet List</button>
-          <button @click="() => setTextAlign(eventEditor, 'left')">Left</button>
-          <button @click="() => setTextAlign(eventEditor, 'center')">Center</button>
-          <button @click="() => setTextAlign(eventEditor, 'right')">Right</button>
+          <div class="style-dropdown">
+            <select @change="setStyle(eventEditor, $event.target.value)">
+              <option value="">Style</option>
+              <option value="bold">Bold</option>
+              <option value="italic">Italic</option>
+              <option value="underline">Underline</option>
+            </select>
+          </div>
+          <div class="align-dropdown">
+            <select @change="setTextAlign(eventEditor, $event.target.value)">
+              <option value="">Align</option>
+              <option value="left">Left</option>
+              <option value="center">Center</option>
+              <option value="right">Right</option>
+            </select>
+          </div>
+          <select @change="setHeadingLevel(eventEditor, $event.target.value)">
+            <option value="">Heading</option>
+            <option value="">Paragraph</option> <!-- Reset to paragraph -->
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="h4">Heading 4</option>
+            <option value="h5">Heading 5</option>
+          </select>
         </div>
         <editor-content :editor="eventEditor" />
-        <textarea v-model="eventData.description" placeholder="Start typing description..."></textarea>
+        <textarea v-model="eventData.description" placeholder="event description..."></textarea>
         <input type="file" @change="handleEventImageChange" required />
         <button class="submit-btn">{{ isEditingEvent ? 'Update Event' : 'Add Event' }}</button>
       </form>
@@ -82,18 +120,10 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, onMounted, reactive } from 'vue';
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
-import TextStyle from '@tiptap/extension-text-style';
-import Bold from '@tiptap/extension-bold';
-import Italic from '@tiptap/extension-italic';
-import Underline from '@tiptap/extension-underline';
-import Heading from '@tiptap/extension-heading';
-import BulletList from '@tiptap/extension-bullet-list';
-import ListItem from '@tiptap/extension-list-item';
 import TextAlign from '@tiptap/extension-text-align';
 import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
@@ -124,20 +154,14 @@ const eventData = reactive({
   date: '',
   description: '',
   image: null,
-  imageURL: ''
+  imageURL: '',
+  program: ''
 });
 
 // Setup TipTap editor for plants
 const editor = useEditor({
   extensions: [
     StarterKit,
-    TextStyle,
-    Bold,
-    Italic,
-    Underline,
-    Heading,
-    BulletList,
-    ListItem,
     TextAlign.configure({
       types: ['heading', 'paragraph']
     }),
@@ -148,17 +172,11 @@ const editor = useEditor({
   }
 });
 
+
 // Setup TipTap editor for events
 const eventEditor = useEditor({
   extensions: [
     StarterKit,
-    TextStyle,
-    Bold,
-    Italic,
-    Underline,
-    Heading,
-    BulletList,
-    ListItem,
     TextAlign.configure({
       types: ['heading', 'paragraph']
     }),
@@ -279,7 +297,8 @@ const submitEvent = async () => {
     title: eventData.title,
     date: eventData.date,
     description: eventData.description,
-    imageURL: eventData.imageURL
+    imageURL: eventData.imageURL,
+    program: eventData.program
   });
   events.value.push({ id: newDoc.id, ...eventData });
   resetEventForm();
@@ -291,7 +310,8 @@ const updateEvent = async () => {
     title: eventData.title,
     date: eventData.date,
     description: eventData.description,
-    imageURL: eventData.imageURL
+    imageURL: eventData.imageURL,
+    program: eventData.program
   });
   const index = events.value.findIndex(e => e.id === eventData.id);
   if (index !== -1) {
@@ -311,36 +331,26 @@ const editEvent = (event) => {
 };
 
 const resetEventForm = () => {
-  Object.assign(eventData, { id: null, title: '', date: '', description: '', image: null, imageURL: '' });
+  Object.assign(eventData, { id: null, title: '', date: '', description: '', image: null, imageURL: '', program: '' });
   isEditingEvent.value = false;
 };
 
 // TipTap editor methods
-const toggleBold = (editor) => {
+const setStyle = (editor, style) => {
   if (editor) {
-    editor.chain().focus().toggleBold().run();
-    isBoldActive.value = editor.isActive('bold');
-  }
-};
-
-const toggleItalic = (editor) => {
-  if (editor) {
-    editor.chain().focus().toggleItalic().run();
-    isItalicActive.value = editor.isActive('italic');
-  }
-};
-
-const toggleUnderline = (editor) => {
-  if (editor) {
-    editor.chain().focus().toggleUnderline().run();
-    isUnderlineActive.value = editor.isActive('underline');
-  }
-};
-
-const toggleBulletList = (editor) => {
-  if (editor) {
-    editor.chain().focus().toggleBulletList().run();
-    isBulletListActive.value = editor.isActive('bulletList');
+    switch (style) {
+      case 'bold':
+        editor.chain().focus().toggleBold().run();
+        break;
+      case 'italic':
+        editor.chain().focus().toggleItalic().run();
+        break;
+      case 'underline':
+        editor.chain().focus().toggleUnderline().run();
+        break;
+      default:
+        break;
+    }
   }
 };
 
@@ -350,18 +360,21 @@ const setTextAlign = (editor, align) => {
   }
 };
 
-const isTextAlignActive = (align) => {
-  if (editor && typeof editor.isActive === 'function') {
-    return editor.isActive('textAlign', { textAlign: align });
+const setHeadingLevel = (editor, level) => {
+  console.log("Received level:", level);  // To check what value is received
+  const headingLevel = parseInt(level, 10);  // Ensure the parsing is correct
+  console.log("Parsed heading level:", headingLevel);
+
+  if (editor && headingLevel > 0 && headingLevel <= 5) {
+    editor.chain().focus().setHeading({ level: headingLevel }).run();
   } else {
-    return false;
+    editor.chain().focus().setParagraph().run();  // Fallback to paragraph if no valid level
   }
 };
 
-const isBoldActive = ref(false);
-const isItalicActive = ref(false);
-const isUnderlineActive = ref(false);
-const isBulletListActive = ref(false);
+
+
+
 
 </script>
 
@@ -466,23 +479,33 @@ const isBulletListActive = ref(false);
 
   .editor-toolbar {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap; /* Allow elements to wrap onto new lines */
+    justify-content: space-between; /* Distribute items evenly between rows */
     gap: 5px;
     margin-bottom: 10px;
     font-size: small;
+  }
 
-    button {
-      font-size: smaller;
-      
-      padding: 10px;
-      border: none;
-      background-color: #E0E0E0;
-      border-radius: 4px;
-      cursor: pointer;
-      &.is-active {
-        background-color: #BDBDBD;
-      }
-    }
+  /* Style for buttons */
+  .editor-toolbar button,
+  .editor-toolbar select {
+    flex-basis: calc(25% - 5px); /* Set the width of each item to 50% with a 5px gap */
+    padding: 10px;
+    border: none;
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  /* Style for active items */
+  .editor-toolbar button.is-active,
+  .editor-toolbar select.is-active {
+    background-color: #BDBDBD;
+  }
+
+  .style-dropdown,
+  .align-dropdown {
+    flex-basis: calc(25% - 5px); /* Set the width of each dropdown to 25% with a 5px gap */
   }
 }
 </style>
