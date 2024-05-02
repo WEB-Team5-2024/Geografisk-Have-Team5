@@ -40,9 +40,9 @@ const router = createRouter({
     },
     
     {
-      path: '/calender/:startDate',
-      name: 'event',
-      component: () => import('../views/julemarked.vue'),
+      path: '/event/:id',
+      name: 'event-detail',
+      component: () => import('@/views/SingleEventPage.vue'),
       props: true
     },
     {

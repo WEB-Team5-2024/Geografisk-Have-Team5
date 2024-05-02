@@ -1,75 +1,114 @@
 <template>
-    <div class="event-box" v-for="event in events" :key="event.id">
-      <img :src="event.imageUrl" alt="Event image" class="event-image"/>
-      <div class="event-details">
-        <h3>{{ event.title }}</h3>
-        <p>{{ event.description }}</p>
-        <p>{{ event.date ? event.date.toDateString() : '' }}</p>
+  <div class="menuContainer">
+    <div class="menuItem" v-for="event in events" :key="event.id" @click="() => navigateToEvent(event.id)">
+      <div class="imageContainer">
+        <img :src="event.imageUrl || '/default-image.jpg'" :alt="`${event.title} Image`" class="eventImage" />
       </div>
+      <div class="textContainer">
+        <h3>{{ event.title }}</h3>
+        <p class="eventDate">{{ event.date ? new Date(event.date).toLocaleDateString() : '' }}</p>
+        <p>{{ event.description }}</p>
+      </div>
+      <i class="bi bi-arrow-right-circle navigateIcon"></i>
     </div>
-  </template>
-  
-  
-  <script setup>
-  import { ref, onMounted } from 'vue';
-  import { getFirestore, collection, getDocs } from 'firebase/firestore';
-  import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
-  
-  const db = getFirestore();
-  const storage = getStorage();
-  const events = ref([]);
-  
-  onMounted(async () => {
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { useFirebaseStorage1 } from '@/composables/useFirebaseStorage1';
+
+const router = useRouter();
+const db = getFirestore();
+const events = ref([]);
+const { loadImage } = useFirebaseStorage1();
+
+onMounted(async () => {
   const eventsCollectionRef = collection(db, 'events');
   const querySnapshot = await getDocs(eventsCollectionRef);
-  const eventsData = await Promise.all(querySnapshot.docs.map(async doc => {
+  events.value = await Promise.all(querySnapshot.docs.map(async doc => {
     const data = doc.data();
     data.id = doc.id;
-
-    // Convert the Firestore timestamp to a JavaScript Date object
-    if (data.date && data.date.toDate) { // assuming 'date' is a Firestore Timestamp
-      data.date = data.date.toDate();
-    } else if (data.date) { // if 'date' is a string
-      data.date = new Date(data.date);
-    }
-
-    if (data.imageURL) {
-      const imageRef = storageRef(storage, data.imageURL);
-      data.imageUrl = await getDownloadURL(imageRef);
-    }
+    data.date = data.date && data.date.toDate ? data.date.toDate() : new Date(data.date).toISOString();
+    data.imageUrl = await loadImage(`images/${data.title.trim()}.png`);
     return data;
   }));
-
-  events.value = eventsData;
 });
-  </script>
-  
-  <style scoped>
-  .event-box {
+
+function navigateToEvent(id) {
+  router.push({ name: 'event-detail', params: { id } });
+}
+</script>
+
+<style scoped lang="scss">
+@import '@/styles/global.scss';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.menuContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 10px;
+
+  .menuItem {
     display: flex;
-    background-color: #6C6E83;
+    align-items: center;
+    background-color: $secondary-color;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
     padding: 20px;
+    color: $font-color;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($secondary-color, 5%);
+    }
+
+    .imageContainer {
+      flex-shrink: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-right: 20px;
+      
+
+      .eventImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .textContainer {
+      flex-grow: 1;
+
+      h3 {
+        margin: 0;
+        font-size: $large-font-size;
+        color: $font-color;
+      }
+
+      .eventDate {
+        margin: 5px 0;
+        font-size: $small-font-size;
+        color: darken($font-color, 20%);
+      }
+
+      p {
+        margin: 5px 0;
+        font-size: $small-font-size;
+        color: $font-color;
+      }
+    }
+
+    .navigateIcon {
+      font-size: 30px;
+      color: $font-color;
+      margin-left: auto;
+    }
   }
-  
-  .event-image {
-    width: 120px;
-    height: 120px;
-    border-radius: 10px;
-    margin-right: 20px;
-  }
-  
-  .event-details h3 {
-    margin: 0;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .event-details p {
-    margin: 5px 0;
-    color: white;
-  }
-  </style>
-  
+}
+</style>
