@@ -20,6 +20,7 @@
 <script setup>
 import { ref } from 'vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import router from '@/router';
 
 const email = ref('');
 const password = ref('');
@@ -30,16 +31,19 @@ const submitForm = async () => {
   await login(auth);
 };
 
+// Login function
 const login = async (auth) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
     const user = userCredential.user;
     console.log("Admin logged in:", user);
+    router.push("/admin");
   } catch (error) {
     errorMessage.value = error.message;
     console.error("Login error:", error.message);
   }
 };
+
 
 </script>
 

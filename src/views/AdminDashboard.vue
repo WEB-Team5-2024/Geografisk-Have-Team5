@@ -116,7 +116,7 @@
       </div>
     </section>
 
-    <button class="signout-button" @click="signout()">Sign out</Button>
+    <button class="signout-button" @click="signout(email)">Sign out</Button>
   </div>
 </template>
 
@@ -130,14 +130,17 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import { storage } from '@/firebase';
 import TopNav from '@/components/TopNav.vue';
 import { signout } from '../composables/Logout';
+import { getAuth } from 'firebase/auth';
 
 // Initialize Firestore and other states
 const db = getFirestore();
+const auth = getAuth();
 const areas = ref([]);
 const plants = ref([]);
 const events = ref([]);
 const isEditingPlant = ref(false);
 const isEditingEvent = ref(false);
+const email = ref(auth.currentUser.email);
 
 // Reactive data for plant and event details
 const plantData = reactive({

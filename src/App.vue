@@ -47,19 +47,6 @@ onAuthStateChanged(auth, (user) => {
   }
 })
 
-// onAuthStateChanged(auth, (user) => {
-//   if(user) {
-//     if(window.location.pathname !== "/admin"){
-//       window.location.pathname = "/admin";
-//     }
-//   } else {
-//     if(
-//       window.location.pathname !== "/login"
-//     ) {
-//     window.location.pathname = "/login";}
-//   }
-// })
-
 onMounted(() => {
   fetchData();
 });
