@@ -27,7 +27,7 @@
   position: fixed;
   background-color: $primary-color;
   border-radius: 20px 20px 0 0;
-  box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.75) inset;
+  box-shadow: $inner-shadow;
   bottom: 0px;
 }
 

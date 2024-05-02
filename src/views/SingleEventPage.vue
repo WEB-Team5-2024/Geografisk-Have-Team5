@@ -1,11 +1,14 @@
 <template>
+  <LoadingSpinner :loading="isLoading"  v-if="isLoading"/>
+  <div v-else>
   <TopNav />
   <div class="event-hero">
-    <img :src="imageUrl || '/default-image.jpg'" alt="Event Image">
+    <img :src="imageUrl || '/default-image.jpg'" alt="Event Image" loading="lazy">
     <div class="text-centered">{{ event ? event.title : 'Loading...' }}</div>
   </div>
   <DetailedEventCard />
   <EventProgram />
+</div>
 </template>
 
 
@@ -18,26 +21,28 @@ import EventProgram from '@/components/EventProgram.vue';
 import DetailedEventCard from '@/components/DetailedEventCard.vue';
 import TopNav from '@/components/TopNav.vue';
 import { useFirebaseStorage } from '@/composables/useFirebaseStorage'; // Import your composable
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 
 const route = useRoute();
 const { imageUrl, loadImage } = useFirebaseStorage(); // Destructure the composable
 const event = ref(null);
-
+const isLoading = ref(true);
 onMounted(async () => {
+
   const eventDocRef = doc(db, 'events', route.params.id);
   const docSnap = await getDoc(eventDocRef);
-
   if (docSnap.exists()) {
     event.value = docSnap.data();
     console.log("Event data:", event.value);
     if (event.value && event.value.title) {
       const imagePath = `images/${event.value.title}.png`;
       console.log("Loading image from:", imagePath);
-      loadImage(imagePath);
+      loadImage(imagePath).then(() => isLoading.value = false);
     }
   } else {
     console.error("Event does not exist!");
   }
+
 });
 </script>
 <style lang="scss">

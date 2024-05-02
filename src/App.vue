@@ -20,16 +20,25 @@ import BottomNav from '@/components/bottomNav.vue';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
-const isLoading = ref(false);
+const isLoading = ref(true);
 
-const fetchData = () => {
+const fetchData = async () => {
   // sætter loading til at være "true"
   isLoading.value = true;
-  setTimeout(() => {
-    // 1. API logik skal insættes her, istedet for en setTimeOut funktion, skal der laves en async/await function.
+
+  try {
+    // 1. API logik skal insættes her
+    // For example, if you're using fetch to make an API call:
+    // const response = await fetch('your-api-url');
+    // const data = await response.json();
+
+    // Remember to replace the above with your actual API call
+  } catch (error) {
+    console.error("Error fetching data: ", error);
+  } finally {
     // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
     isLoading.value = false;
-  }, 0);
+  }
 };
 
 const router = useRouter();
