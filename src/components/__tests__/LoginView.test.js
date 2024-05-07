@@ -1,17 +1,17 @@
-import { shallowMount } from '@vue/test-utils';
+import { mount } from 'vitest';
 import LoginView from '@/views/LoginView.vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-jest.mock("firebase/auth", () => ({
-  getAuth: jest.fn(),
-  signInWithEmailAndPassword: jest.fn(),
+vitest.mock("firebase/auth", () => ({
+  getAuth: vitest.fn(),
+  signInWithEmailAndPassword: vitest.fn(),
 }));
 
 describe('LoginView.vue', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallowMount(LoginView);
+    wrapper = mount(LoginView);
   });
 
   it('renders a form', () => {
@@ -41,6 +41,6 @@ describe('LoginView.vue', () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vitest.resetAllMocks();
   });
 });
