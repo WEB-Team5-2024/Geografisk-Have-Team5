@@ -1,4 +1,4 @@
-import { mount } from 'vitest';
+import { mount, describe } from 'vitest';
 import LoginView from '@/views/LoginView.vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { vitest } from 'vitest';
