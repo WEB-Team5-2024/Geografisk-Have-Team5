@@ -41,13 +41,21 @@
   
 
   <script setup>
+  
   import { onMounted, ref } from 'vue';
-  import { useRouter } from 'vue-router'; // Ensure useRouter is imported
+  import { useRouter } from 'vue-router'; 
   import { db } from '@/firebase';
   import { collection, getDocs } from 'firebase/firestore';
   import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
   import TopNav from '../components/TopNav.vue';
   import MapComponent from '../components/MapComponent.vue';
+  import { useLocationStore } from '@/stores/location'; // Importer Pinia-butik til at få den valgte destination
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+  import 'leaflet-routing-machine';
+
+
+  const locationStore = useLocationStore();
 
 const areas = ref([]);
 const router = useRouter(); 
@@ -85,7 +93,7 @@ onMounted(async () => {
 
 
 const selectArea = (area) => {
-  selectedArea.value = area;
+  locationStore.updateSelectedArea(area); // Opdater Pinia-butik med den valgte destination
 };
 
 const navigateToMoreInfo = (area) => {
