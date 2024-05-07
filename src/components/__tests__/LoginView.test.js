@@ -1,32 +1,46 @@
-import { describe, it, expect, vi } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import LoginView from '@/views/LoginView.vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
-// Mocking Firebase Auth functions
-vi.mock("firebase/auth", () => ({
-  getAuth: vi.fn(() => ({})),
-  signInWithEmailAndPassword: vi.fn(() => Promise.resolve({ user: {} }))
+jest.mock("firebase/auth", () => ({
+  getAuth: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
 }));
 
 describe('LoginView.vue', () => {
-  it('renders login form', () => {
-    const wrapper = mount(LoginView);
-    expect(wrapper.find('h2').text()).toEqual('Admin Login');
+  let wrapper;
+
+  beforeEach(() => {
+    wrapper = shallowMount(LoginView);
+  });
+
+  it('renders a form', () => {
+    expect(wrapper.find('form').exists()).toBe(true);
+  });
+
+  it('renders email and password input fields', () => {
     expect(wrapper.find('input[type="email"]').exists()).toBe(true);
     expect(wrapper.find('input[type="password"]').exists()).toBe(true);
   });
 
-  it('submits the form and calls signInWithEmailAndPassword', async () => {
-    const wrapper = mount(LoginView);
+  it('calls signInWithEmailAndPassword when form is submitted', async () => {
     const emailInput = wrapper.find('input[type="email"]');
     const passwordInput = wrapper.find('input[type="password"]');
     const form = wrapper.find('form');
 
-    await emailInput.setValue('admin@example.com');
-    await passwordInput.setValue('password');
+    emailInput.setValue('test@example.com');
+    passwordInput.setValue('password');
+
     await form.trigger('submit.prevent');
 
-    expect(signInWithEmailAndPassword).toHaveBeenCalled();
+    expect(signInWithEmailAndPassword).toHaveBeenCalledWith(
+      expect.anything(), // because we don't know what getAuth() will return
+      'test@example.com',
+      'password'
+    );
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 });

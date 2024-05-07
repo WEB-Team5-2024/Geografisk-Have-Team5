@@ -12,7 +12,7 @@
         <div class="button-container">
           <router-link to="/map"><button>Kort</button></router-link>
           <router-link to="/omHaven"><button>Om haven</button></router-link>
-          <router-link to="/julemarked"><button>Event</button></router-link>
+          <router-link to="/calender"><button>Event</button></router-link>
         </div>
     </div>
     <bottomNav></bottomNav>
