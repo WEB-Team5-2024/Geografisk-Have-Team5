@@ -1,6 +1,7 @@
 import { mount } from 'vitest';
 import LoginView from '@/views/LoginView.vue';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { vitest } from 'vitest';
 
 vitest.mock("firebase/auth", () => ({
   getAuth: vitest.fn(),
