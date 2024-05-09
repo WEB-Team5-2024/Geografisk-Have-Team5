@@ -12,7 +12,7 @@
           <div class="textContainer">
             <div class="titleAndDistance">
               <h3>{{ area.name }}</h3>
-              <p class="distanceText">{{ area.distance }} meter</p>
+            <p class="distanceText">{{ area.distance ? `${area.distance} meters` : 'Calculating...' }}</p>
             </div>
             <p>{{ area.description }}</p>
           </div>
@@ -55,7 +55,7 @@
   import 'leaflet-routing-machine';
 
 
-  const locationStore = useLocationStore();
+
 
 const areas = ref([]);
 const router = useRouter(); 
@@ -64,6 +64,10 @@ const { imageUrl, loadImage } = useFirebaseStorage();
 
 const areasCollectionRef = collection(db, 'areas');
 const selectedArea = ref(null);
+const locationStore = useLocationStore();
+
+
+
 
 onMounted(async () => {
   const querySnapshot = await getDocs(areasCollectionRef);
@@ -92,9 +96,18 @@ onMounted(async () => {
 });
 
 
-const selectArea = (area) => {
-  locationStore.updateSelectedArea(area); // Opdater Pinia-butik med den valgte destination
-};
+function selectArea(area) {
+  selectedArea.value = area; 
+    if (!area.lat || !area.lng) {
+        console.error("Missing latitude or longitude for the area", area);
+        return;
+    }
+    selectedArea.value = area; // Antag at selectedArea er en reaktiv reference
+    locationStore.updateSelectedArea(area); // Opdater det valgte område i butikken
+    console.log(`Selected Area Lat: ${area.lat}, Lng: ${area.lng}`); // Log lat og lng
+}
+
+
 
 const navigateToMoreInfo = (area) => {
   router.push({ name: 'countryView', params: { id: area.id } });
