@@ -34,11 +34,14 @@ onMounted(async () => {
   events.value = await Promise.all(querySnapshot.docs.map(async doc => {
     const data = doc.data();
     data.id = doc.id;
+    // Ensure date conversion is consistent
     data.date = data.date && data.date.toDate ? data.date.toDate() : new Date(data.date).toISOString();
+    console.log(data.date);  // This will log the converted dates
     data.imageUrl = await loadImage(`images/${data.title.trim()}.png`);
     return data;
   }));
 });
+
 
 function navigateToEvent(id) {
   router.push({ name: 'event-detail', params: { id } });
