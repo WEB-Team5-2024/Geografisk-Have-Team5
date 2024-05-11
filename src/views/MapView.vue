@@ -1,7 +1,6 @@
 <template>
     <div>
       <TopNav/>
-
       <MapComponent :selected-area="selectedArea" />
       <div class="menuContainer" v-if="!selectedArea">
         <!-- Loop through areas only if none is selected -->
@@ -114,26 +113,27 @@ const navigateToMoreInfo = (area) => {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/styles/global.scss';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .menuContainer {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin: 10px;
+    gap: 10px;
+    margin: 8px 15px 0px 15px;
     margin-bottom: 100px;
-
+    
     .menuItem {
         display: flex;
         align-items: center;
         background: $secondary-color;
-        box-shadow: $drop-shadow-light;
+        box-shadow: $menuContainer-shadow;
         border-radius: $border-radius;
         padding: 20px;
         color: $font-color;
         position: relative;
+        gap: 10px;
 
         .imageContainer {
             flex-shrink: 0;
@@ -171,6 +171,10 @@ const navigateToMoreInfo = (area) => {
                     padding: 5px 10px;
                     border-radius: 15px;
                     font-size: 12px;
+                }
+
+                .distanceText {
+                    color: $distancetext-color;
                 }
             }
 
