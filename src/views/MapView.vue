@@ -13,6 +13,7 @@
             <div class="titleAndDistance">
               <h3>{{ area.name }}</h3>
             <p class="distanceText">{{ area.distance ? `${area.distance} meters` : 'Calculating...' }}</p>
+            
             </div>
             <p>{{ area.description }}</p>
           </div>
@@ -66,11 +67,10 @@ const areasCollectionRef = collection(db, 'areas');
 const selectedArea = ref(null);
 const locationStore = useLocationStore();
 
-
-
-
 onMounted(async () => {
   const querySnapshot = await getDocs(areasCollectionRef);
+  console.log('################################################################')
+  console.log(locationStore);
 
   areas.value = await Promise.all(querySnapshot.docs.map(async (doc) => {
     const data = doc.data();
@@ -94,7 +94,6 @@ onMounted(async () => {
     };
   }));
 });
-
 
 function selectArea(area) {
   selectedArea.value = area; 
