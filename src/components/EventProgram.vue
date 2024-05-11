@@ -56,7 +56,6 @@ onMounted(async () => {
     font-weight: $regular-weight;
     color: $background-color;
     text-align: center;
-    padding: 0px 10px 0px 10px;
 }
 .eventProgram-title{
     font: $primary-font;

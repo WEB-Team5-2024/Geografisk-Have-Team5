@@ -1,16 +1,14 @@
 <template>
   <div v-if="event" class="event-card">
-      <div class="event-info">
-        <div class="event-card-title">
-          <p>{{ event.title }}</p>
-        </div>
-        <div class="event-card-description">
-          <p>{{ event.description }}</p>
-        </div>
-      </div>
-      <div class="button-container">
-        <div class="buy-button"> <p>Køb Billet</p> </div>
-      </div>
+    <div class="event-card-title">
+      <p>{{ event.title }}</p>
+    </div>
+    <div class="event-card-description">
+      <p>{{ event.description }}</p>
+    </div>
+    <div class="button-container">
+      <div class="buy-button"> <p>Køb Billet</p> </div>
+    </div>
   </div>
   <div v-else>
     Loading event details...
@@ -61,10 +59,6 @@
   width: 320px;
 }
 
-.event-info {
-  padding: 0px 10px 0px 10px;
-}
-
 .event-card-description {
   font: $primary-font;
   font-size: $extra-small-font-size;
@@ -94,12 +88,11 @@
 .buy-button {
   height: 100%;
   width: 100%;
-  background-color: $darkerbtn-color;
+  background-color: #4A4C63;
   border-radius: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: $background-color;
-  box-shadow: $darkbutton-shadow;
 }
 </style>

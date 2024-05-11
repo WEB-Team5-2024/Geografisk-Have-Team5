@@ -7,8 +7,7 @@
       <div class="textContainer">
         <h3>{{ event.title }}</h3>
         <p class="eventDate">{{ event.date ? new Date(event.date).toLocaleDateString() : '' }}</p>
-        <p :class="{ 'truncated': !showFullText[event.id] }">{{ event.description }}</p>
-        <span v-if="event.description.length > maxCharacters" @click.stop="toggleShowFullText(event.id)" class="show-more">{{ showFullText[event.id] ? 'Vis mindre info' : 'Vis mere info' }}</span>
+        <p>{{ event.description }}</p>
       </div>
       <i class="bi bi-arrow-right-circle navigateIcon"></i>
     </div>
@@ -25,8 +24,6 @@ const router = useRouter();
 const db = getFirestore();
 const events = ref([]);
 const { loadImage } = useFirebaseStorage1();
-const showFullText = ref({});
-const maxCharacters = 100; // Adjust as needed
 
 onMounted(async () => {
   const eventsCollectionRef = collection(db, 'events');
@@ -46,11 +43,6 @@ onMounted(async () => {
 function navigateToEvent(id) {
   router.push({ name: 'event-detail', params: { id } });
 }
-
-
-function toggleShowFullText(id) {
-  showFullText.value[id] = !showFullText.value[id];
-}
 </script>
 
 <style scoped lang="scss">
@@ -69,8 +61,7 @@ function toggleShowFullText(id) {
     background-color: $secondary-color;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    padding: 10px;
-    gap: 10px;
+    padding: 20px;
     color: $font-color;
     cursor: pointer;
 
@@ -84,6 +75,8 @@ function toggleShowFullText(id) {
       height: 100px;
       border-radius: 10px;
       overflow: hidden;
+      margin-right: 20px;
+      
 
       .eventImage {
         width: 100%;
@@ -94,28 +87,23 @@ function toggleShowFullText(id) {
 
     .textContainer {
       flex-grow: 1;
-      width: 50%;
 
       h3 {
-        font-size: $medium-font-size;
+        margin: 0;
+        font-size: $large-font-size;
         color: $font-color;
       }
 
       .eventDate {
-        font-size: $extra-small-font-size;
+        margin: 5px 0;
+        font-size: $small-font-size;
         color: darken($font-color, 20%);
       }
 
-      p.truncated {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        }
-
-      .show-more {
-        color: $distancetext-color; /* Or any other color */
-        cursor: pointer;
+      p {
+        margin: 5px 0;
         font-size: $small-font-size;
+        color: $font-color;
       }
     }
 
