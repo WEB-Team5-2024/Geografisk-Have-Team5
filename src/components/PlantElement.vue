@@ -1,44 +1,53 @@
 <template>
-    <div class="plantContainer" @click="() => navigateToPlant(plant.id)">
-      <img :src="imageUrl" alt="Plant image" class="plantImage" />
-      <div class="plantTextContainer">
-        <p class="plantText">{{ plant.name }}</p>
-      </div>
+  <div class="plantContainer" @click="navigateToPlant">
+    <img :src="plantDetails?.imageURL || '/default-image.jpg'" alt="Plant image" class="plantImage">
+    <div class="plantTextContainer">
+      <p class="plantText">{{ plantDetails?.name }}</p>
     </div>
-  </template>
-  
-  <script>
-  import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
-  import { useRouter } from 'vue-router';
-  
-  export default {
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { db } from '@/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+
+export default {
   props: ['plant'],
   setup(props) {
     const router = useRouter();
-    const { imageUrl, loadImage } = useFirebaseStorage();
-    console.log(props.plant)
-    
-    loadImage(`images/${props.plant.name}.png`);
+    const route = useRoute(); // Correctly initialize route
+    const plantDetails = ref(null);
 
-    
-    const navigateToPlant = () => {
-       
+    // Load plant details on mount
+    onMounted(async () => {
       if (!props.plant.id) {
         console.error('Plant ID is undefined or empty');
         return;
       }
+
+      const plantRef = doc(db, 'plants', props.plant.id);
+      const plantSnap = await getDoc(plantRef);
+
+      if (plantSnap.exists()) {
+        plantDetails.value = plantSnap.data();
+      } else {
+        console.error('Plant not found');
+        plantDetails.value = { name: 'Unknown', imageURL: '/default-image.jpg' }; // Default fallback
+      }
+    });
+
+    // Function to navigate to detailed plant page
+    const navigateToPlant = () => {
       router.push({ name: 'PlantPage', params: { id: props.plant.id } });
     };
-    
-    return {
-      imageUrl,
-      navigateToPlant,
-    };
-  },
+
+    return { plantDetails, navigateToPlant };
+  }
 };
 </script>
-  
-  
+
   
   <style scoped lang="scss">
   @import '@/styles/global.scss';

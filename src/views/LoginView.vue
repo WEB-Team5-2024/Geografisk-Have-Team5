@@ -1,20 +1,21 @@
 <template>
-  <div class="login-form">
-    <h2>Admin Login</h2>
-    <form @submit.prevent="submitForm">
-      <div>
-        <label>Email:</label>
-        <input type="email" v-model="email" required>
+  <div class="login-form-container">
+    <h2 class="form-title">Admin Login</h2>
+    <form @submit.prevent="submitForm" class="login-form">
+      <div class="input-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" v-model="email" required>
       </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" v-model="password" required>
+      <div class="input-group">
+        <label for="password">Password:</label>
+        <input id="password" type="password" v-model="password" required>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" class="login-button">Login</button>
     </form>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+    <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
   </div>
 </template>
+
 
 <script setup>
 import { ref, watch } from 'vue';
@@ -33,6 +34,71 @@ watch([email, password], () => {
 });
 </script>
 
-<style>
+<style scoped lang="scss">
+@import '@/styles/global.scss'; // Ensure this path matches where your global styles are defined
 
+.login-form-container {
+  background-color: $background-color;
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $drop-shadow;
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto 0;
+
+  .form-title {
+    color: $primary-color;  // Use primary color for the title
+    font-size: $extra-large-font-size;
+    font-weight: $bold-weight;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .input-group {
+    margin-bottom: 1.5rem;
+    
+    label {
+      display: block;
+      color: $primary-color;  // Use primary color for labels
+      font-size: $medium-font-size;
+      font-weight: $regular-weight;
+      margin-bottom: 0.5rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: $border-radius;
+      font-size: $medium-font-size;
+      box-shadow: $inner-shadow;
+      background: $font-color; // Assuming you want a light background for inputs
+      color: $primary-color; // Use primary color for text in inputs
+    }
+  }
+
+  .login-button {
+    width: 100%;
+    background-color: $primary-color; // Button uses primary color
+    color: $font-color;
+    padding: 0.8rem;
+    font-size: $medium-font-size;
+    font-weight: $bold-weight;
+    border: none;
+    border-radius: $border-radius;
+    box-shadow: $btn-shadow;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($primary-color, 10%); // Darken primary color on hover
+    }
+  }
+
+  .error-message {
+    color: #FF6347; // Tomato color for errors, more visible
+    font-size: $small-font-size;
+    text-align: center;
+    margin-top: 1rem;
+  }
+}
 </style>

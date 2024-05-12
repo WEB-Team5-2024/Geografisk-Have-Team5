@@ -2,11 +2,11 @@
   <div class="menuContainer">
     <div class="menuItem" v-for="event in events" :key="event.id" @click="() => navigateToEvent(event.id)">
       <div class="imageContainer">
-        <img :src="event.imageUrl || '/default-image.jpg'" :alt="`${event.title} Image`" class="eventImage" />
+        <img :src="event.imageURL || '/default-image.jpg'" :alt="`${event.imageURL} Image`" class="eventImage" />
       </div>
       <div class="textContainer">
         <h3>{{ event.title }}</h3>
-        <p class="eventDate">{{ event.date ? new Date(event.date).toLocaleDateString() : '' }}</p>
+        <p class="eventDate">{{ event.date || 'Date not available' }}</p>
         <p>{{ event.description }}</p>
       </div>
       <i class="bi bi-arrow-right-circle navigateIcon"></i>
@@ -15,28 +15,25 @@
 </template>
 
 <script setup>
+
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
-import { useFirebaseStorage1 } from '@/composables/useFirebaseStorage1';
 
 const router = useRouter();
 const db = getFirestore();
 const events = ref([]);
-const { loadImage } = useFirebaseStorage1();
-
 onMounted(async () => {
   const eventsCollectionRef = collection(db, 'events');
   const querySnapshot = await getDocs(eventsCollectionRef);
-  events.value = await Promise.all(querySnapshot.docs.map(async doc => {
+  events.value = querySnapshot.docs.map(doc => {
     const data = doc.data();
+    console.log(data); // Log to see what properties are available
     data.id = doc.id;
-    // Ensure date conversion is consistent
-    data.date = data.date && data.date.toDate ? data.date.toDate() : new Date(data.date).toISOString();
-    console.log(data.date);  // This will log the converted dates
-    data.imageUrl = await loadImage(`images/${data.title.trim()}.png`);
+    data.date = data.date ? new Date(data.date).toLocaleDateString() : 'No Date Provided';
+    data.imageUrl = data.imageUrl || '/default-image.jpg'; // Ensure default
     return data;
-  }));
+  });
 });
 
 
@@ -44,6 +41,9 @@ function navigateToEvent(id) {
   router.push({ name: 'event-detail', params: { id } });
 }
 </script>
+
+
+
 
 <style scoped lang="scss">
 @import '@/styles/global.scss';
@@ -76,7 +76,6 @@ function navigateToEvent(id) {
       border-radius: 10px;
       overflow: hidden;
       margin-right: 20px;
-      
 
       .eventImage {
         width: 100%;
@@ -104,6 +103,11 @@ function navigateToEvent(id) {
         margin: 5px 0;
         font-size: $small-font-size;
         color: $font-color;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
