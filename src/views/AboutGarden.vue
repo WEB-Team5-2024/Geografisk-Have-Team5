@@ -22,7 +22,7 @@
 
       <div>
         <h2 class="inspiringGarden">Inspirerende have</h2>
-        <p>Lad dig inspirere af Naturhaven, Krydderurtehaven, Den Økologiske Køkkenhave, Staudehaven og mange andre dejlige områder. Den prisbelønnede Rosenhave er især en fantastisk duftoplevelse om sommeren med over 5000 moderne roser. I Rosariet kan du gå på opdagelse i både historiske og vilde roser. I Syvdalen venter spændende og mere vilde natureventyr med grotter, bæk og kvidrende fuglesang. Følger du den 1,8 km lange Hjertesti med fuglesang, vil du også opleve det rige fugleliv, som er med til at give stedet en helt særlig stemning.</p>
+        <p> slamdumk lad dig inspirere af Naturhaven, Krydderurtehaven, Den Økologiske Køkkenhave, Staudehaven og mange andre dejlige områder. Den prisbelønnede Rosenhave er især en fantastisk duftoplevelse om sommeren med over 5000 moderne roser. I Rosariet kan du gå på opdagelse i både historiske og vilde roser. I Syvdalen venter spændende og mere vilde natureventyr med grotter, bæk og kvidrende fuglesang. Følger du den 1,8 km lange Hjertesti med fuglesang, vil du også opleve det rige fugleliv, som er med til at give stedet en helt særlig stemning.</p>
       </div>
 
       <div>
