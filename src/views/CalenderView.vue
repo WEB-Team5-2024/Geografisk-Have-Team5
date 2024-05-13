@@ -81,4 +81,8 @@ export default {
   border-radius: 50%; // This makes the border a circle
   color: white; // This makes the text white
 }
+
+.vc-arrow {
+  visibility: hidden;
+}
 </style>
