@@ -44,7 +44,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '@/styles/global.scss';
 .vc-container {
   width: 100%;
 }
@@ -52,5 +53,36 @@ export default {
 .calendar-view {
   max-width: 800px;
   margin: auto;
+}
+
+.vc-weeks {
+  background-color: $secondary-color;
+}
+
+.vc-pane {
+  background-color: $secondary-color;
+}
+
+.vc-header .vc-title {
+    text-decoration: none;
+    background-color: $secondary-color;
+    color: white;
+    font: normal normal normal 16px/25px Poppins;
+    letter-spacing: 1.6px;
+}
+
+.vc-day-content{
+  color: white;
+}
+
+.vc-highlight, .vc-state-highlight, .vc-day-content-highlight {
+  border: 2px solid white; // Adjust the border width as needed
+  background-color: transparent !important;
+  border-radius: 50%; // This makes the border a circle
+  color: white; // This makes the text white
+}
+
+.vc-arrow {
+  visibility: hidden;
 }
 </style>

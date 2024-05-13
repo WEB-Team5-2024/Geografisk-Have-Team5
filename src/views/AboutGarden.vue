@@ -39,6 +39,8 @@ import TopNav from '../components/TopNav.vue'
 </script>
 
 <style scoped lang="scss">
+@import '@/styles/global.scss';
+
 .contentContainer{
   margin-bottom: 50px;
 }
@@ -52,6 +54,7 @@ import TopNav from '../components/TopNav.vue'
 
 .titleHeader {
   text-align: center;
+  font-weight: $bold-weight;
 }
 
 </style>

@@ -7,9 +7,9 @@
         <div class="event-card-description">
           <p>{{ event.description }}</p>
         </div>
-      </div>
-      <div class="button-container">
-        <div class="buy-button"> <p>Køb Billet</p> </div>
+        <div class="button-container">
+          <div class="buy-button"> <p>Køb Billet</p> </div>
+        </div>
       </div>
   </div>
   <div v-else>
@@ -51,7 +51,7 @@
 
 .event-card {
   background-color: $secondary-color;
-  box-shadow: $drop-shadow;
+  box-shadow: $drop-shadow-light;
   border-radius: 10px;
   margin-left: auto;
   margin-right: auto;
