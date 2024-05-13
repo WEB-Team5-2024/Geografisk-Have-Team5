@@ -37,23 +37,19 @@
     </div>
   </template>
   
+<script setup>
 
-
-  
-
-  <script setup>
-  
-  import { onMounted, ref } from 'vue';
-  import { useRouter } from 'vue-router'; 
-  import { db } from '@/firebase';
-  import { collection, getDocs } from 'firebase/firestore';
-  import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
-  import TopNav from '../components/TopNav.vue';
-  import MapComponent from '../components/MapComponent.vue';
-  import { useLocationStore } from '@/stores/location'; // Importer Pinia-butik til at få den valgte destination
-  import L from 'leaflet';
-  import 'leaflet/dist/leaflet.css';
-  import 'leaflet-routing-machine';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router'; 
+import { db } from '@/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
+import TopNav from '../components/TopNav.vue';
+import MapComponent from '../components/MapComponent.vue';
+import { useLocationStore } from '@/stores/location'; // Importer Pinia-butik til at få den valgte destination
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-routing-machine';
 
 
 
@@ -114,26 +110,27 @@ const navigateToMoreInfo = (area) => {
 </script>
 
 
-<style lang="scss">
+<style scoped lang="scss">
 @import '@/styles/global.scss';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .menuContainer {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin: 10px;
+    gap: 10px;
+    margin: 8px 15px 0px 15px;
     margin-bottom: 100px;
 
     .menuItem {
         display: flex;
         align-items: center;
         background: $secondary-color;
-        box-shadow: $drop-shadow-light;
+        box-shadow: $menuContainer-shadow;
         border-radius: $border-radius;
         padding: 20px;
         color: $font-color;
         position: relative;
+        gap: 10px;
 
         .imageContainer {
             flex-shrink: 0;
@@ -172,6 +169,10 @@ const navigateToMoreInfo = (area) => {
                     border-radius: 15px;
                     font-size: 12px;
                 }
+
+                .distanceText {
+                    color: $distancetext-color;
+                }
             }
 
             p {
@@ -193,7 +194,7 @@ const navigateToMoreInfo = (area) => {
     display: flex;
     gap: 15px;
     margin: 10px;
-   
+  
 
   .menuItem {
     display: flex;
