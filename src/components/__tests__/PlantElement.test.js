@@ -1,56 +1,90 @@
-// Import necessary functions and testing utilities
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { mount } from '@vue/test-utils';
-import PlantManagement from '@/components/PlantManagement.vue';
+import { mount, flushPromises } from '@vue/test-utils';
+import PlantElement from '@/components/PlantElement.vue';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'vue-router';
 
-// Mock Firebase app and Firestore
-vi.mock('@/firebase', () => {
-  const actualFirebase = vi.importActual('@/firebase'); // Import the actual Firebase setup if it's used elsewhere correctly
+// Mock Firebase and Vue Router
+vi.mock('@/firebase', () => ({
+  db: {}
+}));
+
+vi.mock('firebase/firestore', () => ({
+  getFirestore: vi.fn(),
+  doc: vi.fn(),
+  getDoc: vi.fn()
+}));
+
+vi.mock('firebase/app', () => ({
+  initializeApp: vi.fn()
+}));
+
+vi.mock('vue-router', () => {
+  const push = vi.fn();
   return {
-    __esModule: true,
-    ...actualFirebase,
-    initializeApp: vi.fn(() => ({
-      // You may return any other Firebase service mocks needed here
-    })),
-    getFirestore: vi.fn(() => ({
-      collection: vi.fn(() => ({
-        doc: vi.fn(() => ({
-          getDoc: vi.fn().mockResolvedValue({
-            exists: () => true,
-            data: () => ({
-              name: 'Daisy',
-              origin: 'Garden',
-              description: 'Nice flower',
-              imageURL: 'path/to/image.jpg'
-            }),
-          }),
-          setDoc: vi.fn(),
-          updateDoc: vi.fn(),
-          deleteDoc: vi.fn()
-        })),
-      })),
-    })),
+    useRouter: () => ({
+      push
+    }),
+    useRoute: () => ({
+      params: { id: '1' }
+    })
   };
 });
 
-describe('PlantManagement.vue Tests', () => {
-  let wrapper;
+describe('PlantElement.vue', () => {
+  const mockData = { name: 'Aloe Vera', imageURL: 'path/to/aloe.jpg' };
 
   beforeEach(() => {
-    wrapper = mount(PlantManagement, {
-      global: {
-        plugins: [],
-        mocks: {
-          $router: { push: vi.fn() },
-          $route: { params: {} }
-        }
-      }
+    vi.mocked(initializeApp).mockReturnValue({ name: '[DEFAULT]' });
+    vi.mocked(getDoc).mockResolvedValue({
+      exists: () => true,
+      data: () => mockData
     });
+
+    // Clear all previous calls to push for clean state in each test
+    vi.mocked(useRouter().push).mockClear();
   });
 
-  it('should mount the component', async () => {
-    expect(wrapper.exists()).toBe(true);
+  it('loads plant details successfully', async () => {
+    const wrapper = mount(PlantElement, {
+      props: { plant: { id: '1' } }
+    });
+    await flushPromises();
+    expect(wrapper.find('.plantText').text()).toBe(mockData.name);
+    expect(wrapper.find('.plantImage').attributes('src')).toBe(mockData.imageURL);
   });
 
-  // Additional tests can go here
+  it('handles undefined plant ID', async () => {
+    const consoleSpy = vi.spyOn(console, 'error');
+    const wrapper = mount(PlantElement, {
+      props: { plant: {} }
+    });
+    await flushPromises();
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(wrapper.find('.plantText').text()).toBe('');
+  });
+
+  it('handles plant not found', async () => {
+    vi.mocked(getDoc).mockResolvedValue({
+      exists: () => false
+    });
+    const wrapper = mount(PlantElement, {
+      props: { plant: { id: '2' } }
+    });
+    await flushPromises();
+    expect(console.error).toHaveBeenCalledWith('Plant not found');
+    expect(wrapper.find('.plantImage').attributes('src')).toBe('/default-image.jpg');
+    expect(wrapper.find('.plantText').text()).toBe('Unknown');
+  });
+
+  it('navigates to detailed plant page on click', async () => {
+    const wrapper = mount(PlantElement, {
+      props: { plant: { id: '1' } }
+    });
+    await flushPromises();
+    wrapper.vm.navigateToPlant();
+    await flushPromises(); // Ensure all async operations have completed
+    expect(useRouter().push).toHaveBeenCalledWith({ name: 'PlantPage', params: { id: '1' } });
+  });
 });
