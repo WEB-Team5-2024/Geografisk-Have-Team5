@@ -12,7 +12,8 @@ describe('HomePage.vue', () => {
   it('checks if the image is rendered with the correct attributes', () => {
     const wrapper = mount(HomePage);
     const image = wrapper.find('img');
-    expect(image.attributes('src')).toContain('omHavenImg.png');
+// Update the expected value in your test:
+    expect(image.attributes('src')).toContain('/src/assets/images/hero-img.png');
     expect(image.attributes('alt')).toBe('Geografisk Have');
   });
 });

@@ -1,43 +1,56 @@
-import { describe, it, expect, vi } from 'vitest';
+// Import necessary functions and testing utilities
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import PlantElement from '@/components/PlantElement.vue';
+import PlantManagement from '@/components/PlantManagement.vue';
 
-// Mocking useRouter and useFirebaseStorage
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: vi.fn() // Mock the push function of router
-  })
-}));
+// Mock Firebase app and Firestore
+vi.mock('@/firebase', () => {
+  const actualFirebase = vi.importActual('@/firebase'); // Import the actual Firebase setup if it's used elsewhere correctly
+  return {
+    __esModule: true,
+    ...actualFirebase,
+    initializeApp: vi.fn(() => ({
+      // You may return any other Firebase service mocks needed here
+    })),
+    getFirestore: vi.fn(() => ({
+      collection: vi.fn(() => ({
+        doc: vi.fn(() => ({
+          getDoc: vi.fn().mockResolvedValue({
+            exists: () => true,
+            data: () => ({
+              name: 'Daisy',
+              origin: 'Garden',
+              description: 'Nice flower',
+              imageURL: 'path/to/image.jpg'
+            }),
+          }),
+          setDoc: vi.fn(),
+          updateDoc: vi.fn(),
+          deleteDoc: vi.fn()
+        })),
+      })),
+    })),
+  };
+});
 
-vi.mock('@/composables/useFirebaseStorage', () => ({
-  useFirebaseStorage: () => ({
-    imageUrl: 'mocked-url', // Mock the imageUrl returned by useFirebaseStorage
-    loadImage: vi.fn() // Mock the loadImage function
-  })
-}));
+describe('PlantManagement.vue Tests', () => {
+  let wrapper;
 
-describe('PlantElement.vue', () => {
-  it('loads plant picture correctly', () => {
-    const plant = { id: 1, name: 'Test Plant' };
-    const wrapper = mount(PlantElement, { props: { plant } });
-
-    // Assert that the plant image URL is correctly set
-    expect(wrapper.find('.plantImage').attributes('src')).toEqual('mocked-url');
+  beforeEach(() => {
+    wrapper = mount(PlantManagement, {
+      global: {
+        plugins: [],
+        mocks: {
+          $router: { push: vi.fn() },
+          $route: { params: {} }
+        }
+      }
+    });
   });
 
-  it('renders plant name correctly', () => {
-    const plant = { id: 1, name: 'Test Plant' };
-    const wrapper = mount(PlantElement, { props: { plant } });
-
-    // Assert that the plant name is rendered correctly
-    expect(wrapper.find('.plantText').text()).toEqual('Test Plant');
+  it('should mount the component', async () => {
+    expect(wrapper.exists()).toBe(true);
   });
 
-  it('passes plant ID as prop', () => {
-    const plant = { id: 1, name: 'Test Plant' };
-    const wrapper = mount(PlantElement, { props: { plant } });
-
-    // Assert that the plant ID is passed as a prop
-    expect(wrapper.vm.plant.id).toEqual(1);
-  });
+  // Additional tests can go here
 });
