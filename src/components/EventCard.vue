@@ -7,8 +7,7 @@
       <div class="textContainer">
         <h3>{{ event.title }}</h3>
         <p class="eventDate">{{ event.date || 'Date not available' }}</p>
-        <p :class="{ 'truncated': !showFullText[event.id] }">{{ event.description }}</p>
-        <span v-if="event.description.length > maxCharacters" @click.stop="toggleShowFullText(event.id)" class="show-more">{{ showFullText[event.id] ? 'Vis mindre info' : 'Vis mere info' }}</span>
+        <p class="truncated">{{ event.description }}</p>
       </div>
       <i class="bi bi-arrow-right-circle navigateIcon"></i>
     </div>
@@ -89,6 +88,11 @@ function toggleShowFullText(id) {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
 
@@ -107,10 +111,13 @@ function toggleShowFullText(id) {
         }
 
         p.truncated {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          }
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    
         .show-more {
           color: $distancetext-color; /* Or any other color */
           cursor: pointer;
