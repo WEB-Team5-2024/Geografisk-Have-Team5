@@ -42,7 +42,7 @@ onMounted(async () => {
 @import '../styles/global.scss';
 .eventProgram{
     background-color: $secondary-color;
-    box-shadow: $drop-shadow;
+    box-shadow: $drop-shadow-light;
     border-radius: 10px;
     margin-left: auto;
     margin-right: auto;
