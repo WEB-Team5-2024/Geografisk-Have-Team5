@@ -54,7 +54,7 @@ async function uploadAudio() {
 
     const file = fileInput.value;
     let metadata = {
-        contentType: 'audio/mpeg' 
+        contentType: 'audio/mp3' 
     };
 
     
