@@ -18,29 +18,38 @@
           </RouterLink>
         </button>
       </div>
-      
-      <!-- Corrected AudioPlayer integration -->
       <div>
-        <AudioPlayer :src="audioUrl"/>
+        <audio class="styled-audio-player" v-if="audioUrl" ref="audioPlayer">
+          <source :src="audioUrl" />
+          Your browser does not support the audio element.
+        </audio>
+        <div class="controls" v-if="audioUrl">
+          <button @click="togglePlayback">
+            <span v-if="isPlaying">Pause</span>
+            <span v-else>Play</span>
+          </button>
+          <button @click="rewind">Rewind</button>
+          <button @click="forward">Forward</button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import TopNav from '@/components/TopNav.vue';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase';  // Assuming your Firebase config is exported from this file
 
-import AudioPlayer from '@/components/AudioPlayer.vue';
-import TopNav from '@/components/TopNav.vue';
-
 const route = useRoute();
 const country = ref({ name: '', description: '', audioURL: '' });
 const imageUrl = ref('');
 const audioUrl = ref('');
+const isPlaying = ref(false);
+const audioPlayer = ref(null);
 
 const loadImage = async (imagePath) => {
   try {
@@ -62,13 +71,46 @@ const fetchCountryData = async (id) => {
       country.value = docSnap.data();
       const imagePath = `images/${country.value.name}.png`;
       await loadImage(imagePath);
-      audioUrl.value = country.value.audioUrl;
-      console.log("Audio URL:", audioUrl.value);
+      audioUrl.value = country.value.audioURL;
+      console.log("Audio URL:", audioUrl.value);  // Log audio URL for debugging
     } else {
       console.log("No such document!");
     }
   } catch (error) {
     console.error("Error fetching document:", error);
+  }
+};
+
+const togglePlayback = () => {
+  if (isPlaying.value) {
+    audioPlayer.value.pause();
+  } else {
+    audioPlayer.value.play();
+  }
+  isPlaying.value = !isPlaying.value;
+};
+
+const rewind = () => {
+  audioPlayer.value.currentTime -= 5;
+};
+
+const forward = () => {
+  audioPlayer.value.currentTime += 5;
+};
+
+// Play audio
+const playAudio = () => {
+  if (audioPlayer.value) {
+    audioPlayer.value.play()
+      .then(() => {
+        console.log("Audio playback started");
+      })
+      .catch(error => {
+        console.error("Error playing audio:", error);
+        alert("Audio playback failed. Please check console for details.");
+      });
+  } else {
+    console.error("Audio player is not defined");
   }
 };
 
@@ -127,18 +169,28 @@ a {
 .styled-audio-player {
   width: 100%;
   margin-top: 20px;
-  border-radius: 10px;
-  background-color: #f0f0f0;
 }
 
 audio::-webkit-media-controls-panel {
   background-color: #f0f0f0;
-  border-radius: 5px;
 }
 
-audio::-webkit-media-controls-play-button,
-audio::-webkit-media-controls-mute-button,
-audio::-webkit-media-controls-volume-slider {
-  color: #333;
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.controls button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
 }
 </style>
+
+
