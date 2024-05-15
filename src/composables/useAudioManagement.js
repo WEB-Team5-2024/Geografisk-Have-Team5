@@ -1,19 +1,58 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
+import { useLocationStore } from '@/stores/location';
+import { db } from '@/firebase';
 import { ref as firebaseRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 
-const db = getFirestore();
 
 export function useAudioManagement() {
   const areas = ref([]);
-  const selectedArea = ref('');
+  const selectedArea = ref(null);
   const audioURL = ref('');
   const fileInput = ref(null);
+  
+
+
+  watch(
+    () => useLocationStore.currentPosition,
+    (newPosition) => {
+      if (newPosition && newPosition.lat && newPosition.lng) {
+        calculateDistances();
+      }
+    },
+    { immediate: true, deep: true }
+  );
+
+
+  function selectArea(areas) {
+    selectedArea.value = areas;
+    if (!areas.lat || !areas.lng) {
+      console.error("Missing latitude or longitude for the area", areas);
+      return;
+    }
+    useLocationStore.updateSelectedArea(areas);
+  }
+
+  watch(
+    () => useLocationStore.selectedArea,
+    (newSelectedArea) => {
+      selectedArea.value = newSelectedArea;
+    },
+    { immediate: true }
+  );
 
   async function fetchAreas() {
     const querySnapshot = await getDocs(collection(db, 'areas'));
-    areas.value = querySnapshot.docs.map(doc => ({ id: doc.id, name: doc.data().name }));
+    areas.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      name: doc.data().name,
+      mapLocation: doc.data().mapLocation
+    }));
   }
+
+
 
   function handleFileSelection(event) {
     if (event.target.files.length > 0) {
@@ -82,11 +121,12 @@ export function useAudioManagement() {
   return {
     areas,
     selectedArea,
+    selectArea,
     audioURL,
     fileInput,
     fetchAreas,
     handleFileSelection,
     canSubmit,
-    uploadAudio
+    uploadAudio,
   };
 }

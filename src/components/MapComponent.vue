@@ -27,8 +27,7 @@
   let map = null;
   let currentLocationMarker = null;
   let linesLayer = null;
-  
-  const locationStore = useLocationStore();
+
   
   onMounted(() => {
     map = L.map(mapContainer.value).setView([55.47509029500938, 9.492597226698194], 16);
@@ -52,7 +51,7 @@
     }).addTo(map).bindPopup('Hele Haven');
   
     // Add markers for each garden area
-    locationStore.gardenAreas.forEach(area => {
+    useLocationStore.gardenAreas.forEach(area => {
       const marker = L.circle([area.lat, area.lng], {
         color: area.color,
         fillColor: area.color,
@@ -76,7 +75,7 @@
       }).addTo(map).bindPopup('Hele Haven');
   
       // Add markers for each garden area
-      locationStore.gardenAreas.forEach(area => {
+      useLocationStore.gardenAreas.forEach(area => {
           const marker = L.circle([area.lat, area.lng], {
               color: area.color,
               fillColor: area.color,

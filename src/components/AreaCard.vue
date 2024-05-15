@@ -1,16 +1,16 @@
 <template>
     <div>
       <div class="menuContainer" v-if="!selectedArea">
-        <div class="menuItem" v-for="area in locationStore.gardenAreas" :key="area.id" @click="selectArea(area)">
+        <div class="menuItem" v-for="areas in useLocationStore.gardenAreas" :key="areas.id" @click="selectArea(areas)">
           <div class="imageContainer">
-            <img :src="area.imageURL" :alt="`${area.name} Image`" />
+            <img :src="areas.imageURL" :alt="`${areas.name} Image`" />
           </div>
           <div class="textContainer">
             <div class="titleAndDistance">
-              <h3>{{ area.name }}</h3>
-              <p class="distanceText">{{ area.distance !== null ? `${area.distance} meters` : 'Calculating...' }}</p>
+              <h3>{{ areas.name }}</h3>
+              <p class="distanceText">{{ areas.distance !== null ? `${areas.distance} meters` : 'Calculating...' }}</p>
             </div>
-            <p>{{ area.description }}</p>
+            <p>{{ areas.description }}</p>
           </div>
           <i class="bi bi-arrow-right-circle"></i>
         </div>
@@ -32,21 +32,24 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, watch } from 'vue';
+  import { ref, computed, onMounted } from 'vue';
+  import { useAudioManagement } from '@/composables/useAudioManagement';
   import { useRouter } from 'vue-router';
   import { useFirebaseStorage } from '@/composables/useFirebaseStorage';
   import { useLocationStore } from '@/stores/location';
   import { collection, getDocs } from 'firebase/firestore';
   import { db } from '@/firebase';
-  
-  const areas = ref([]);
-  const selectedArea = ref(null);
+
+  const { fetchAreas, selectArea } = useAudioManagement();
+  const { areas, selectedArea } = useLocationStore();
   const router = useRouter();
-  
   const { imageUrl, loadImage } = useFirebaseStorage();
   const areasCollectionRef = collection(db, 'areas');
   const locationStore = useLocationStore();
-  
+  fetchAreas();
+
+  console.log(fetchAreas);
+
   onMounted(async () => {
     const querySnapshot = await getDocs(areasCollectionRef);
     areas.value = await Promise.all(querySnapshot.docs.map(async (doc) => {
@@ -64,10 +67,11 @@
         lat: data.lat, // Ensure latitude is included
         lng: data.lng, // Ensure longitude is included
         distance: areas.distance, // Start with null until distance is calculated
-        imageURL: imageUrl.value,
+        imageURL: doc.data().imageURL,
       };
     }));
-  
+
+
     // Update garden areas in the store
     locationStore.$patch({ gardenAreas: areas.value });
   
@@ -77,48 +81,12 @@
     }
   });
   
-  // Watch for updates to currentPosition and recalculate distances
-  watch(
-    () => locationStore.currentPosition,
-    (newPosition) => {
-      if (newPosition.lat && newPosition.lng) {
-        calculateDistances();
-      }
-    },
-    { immediate: true, deep: true }
-  );
+
   
-  function calculateDistances() {
-    if (locationStore.currentPosition.lat && locationStore.currentPosition.lng) {
-      areas.value.forEach(area => {
-        if (area.lat && area.lng) {
-          area.distance = locationStore.calculateDistance(locationStore.currentPosition, { lat: area.lat, lng: area.lng });
-        }
-      });
-    }
+  function navigateToMoreInfo(areas) {
+    router.push({ name: 'countryView', params: { id: areas.id } });
   }
   
-  function selectArea(area) {
-    selectedArea.value = area;
-    if (!area.lat || !area.lng) {
-      console.error("Missing latitude or longitude for the area", area);
-      return;
-    }
-    locationStore.updateSelectedArea(area);
-  }
-  
-  function navigateToMoreInfo(area) {
-    router.push({ name: 'countryView', params: { id: area.id } });
-  }
-  
-  // Watch for updates to the selected area in the store
-  watch(
-    () => locationStore.selectedArea,
-    (newSelectedArea) => {
-      selectedArea.value = newSelectedArea;
-    },
-    { immediate: true }
-  );
   
   </script>
   
