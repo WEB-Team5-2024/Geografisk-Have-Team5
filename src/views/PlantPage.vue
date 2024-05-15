@@ -16,37 +16,31 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { db } from '@/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-export default {
-  setup() {
-    const route = useRoute();
-    const plantDetails = ref(null);
+const route = useRoute();
+const plantDetails = ref(null);
 
-    onMounted(async () => {
-      const plantId = route.params.id;
-      if (!plantId) {
-        console.error('Plant ID is not defined');
-        return;
-      }
-
-      const plantRef = doc(db, 'plants', plantId);
-      const plantSnap = await getDoc(plantRef);
-
-      if (plantSnap.exists()) {
-        plantDetails.value = plantSnap.data();
-      } else {
-        console.error('Plant not found');
-      }
-    });
-
-    return { plantDetails };
+onMounted(async () => {
+  const plantId = route.params.id;
+  if (!plantId) {
+    console.error('Plant ID is not defined');
+    return;
   }
-};
+
+  const plantRef = doc(db, 'plants', plantId);
+  const plantSnap = await getDoc(plantRef);
+
+  if (plantSnap.exists()) {
+    plantDetails.value = plantSnap.data();
+  } else {
+    console.error('Plant not found');
+  }
+});
 </script>
 
 
