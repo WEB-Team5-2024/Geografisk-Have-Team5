@@ -60,14 +60,38 @@
         radius: 50
       }).addTo(map);
   
-      marker.on('click', () => {
-        drawLineToArea(area.lat, area.lng);
-        setTimeout(() => {
-          marker.bindPopup(`<strong>${area.name}</strong><br>Distance: ${area.distance ? `${area.distance} meters` : 'Connecting...'}`, {
-            offset: L.point(0, -40) // Lift the popup above the line
-          }).openPopup();
-          emits('update:areaDistance', area.distance); // Emitting area distance
-        }, 200); // Delay popup opening to draw attention to the line
+      // Layer for lines
+      linesLayer = L.layerGroup().addTo(map);
+  
+      // Define and add polygon for Hele Haven area
+      const heleHavenPunkter = [
+          [55.4754694, 9.4916197], [55.4753040, 9.4929526], [55.4751092, 9.4928845],
+          [55.4749764, 9.4940302], [55.4707746, 9.4962617], [55.4693387, 9.4929228],
+          [55.4711935, 9.4896023]
+      ];
+      L.polygon(heleHavenPunkter, {
+          color: 'gray',
+          fillColor: 'gray',
+          fillOpacity: 0.5
+      }).addTo(map).bindPopup('Hele Haven');
+  
+      // Add markers for each garden area
+      locationStore.gardenAreas.forEach(area => {
+          const marker = L.circle([area.lat, area.lng], {
+              color: area.color,
+              fillColor: area.color,
+              fillOpacity: 0.5,
+              radius: 50
+          }).addTo(map);
+  
+          marker.on('click', () => {
+              drawLineToArea(area.lat, area.lng);
+              setTimeout(() => {
+                  marker.bindPopup(`<strong>${area.name}</strong><br>Distance: ${area.distance ? `${area.distance} meters` : 'Calculating...'}`, {
+                      offset: L.point(0, -40) // Lift the popup above the line
+                  }).openPopup();
+              }, 200); // Delay popup opening to draw attention to the line
+          });
       });
     });
   
