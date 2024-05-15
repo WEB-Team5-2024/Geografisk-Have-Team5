@@ -120,16 +120,6 @@
     { immediate: true }
   );
   
-  import MapComponent from './MapComponent.vue';
-  
-  // Define the method to update the map for the selected area
-  let mapComponentRef = ref(null);
-  
-  function updateMapForArea(area) {
-    if (mapComponentRef.value) {
-      mapComponentRef.value.updateMapForArea(area);
-    }
-  }
   </script>
   
   <style scoped lang="scss">
