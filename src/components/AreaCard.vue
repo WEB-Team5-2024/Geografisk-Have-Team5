@@ -47,6 +47,7 @@
   const areasCollectionRef = collection(db, 'areas');
   const locationStore = useLocationStore();
   
+  
   onMounted(async () => {
     const querySnapshot = await getDocs(areasCollectionRef);
     areas.value = await Promise.all(querySnapshot.docs.map(async (doc) => {
