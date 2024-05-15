@@ -45,7 +45,8 @@ async function uploadAudio() {
         alert('Please select a file and area before uploading!');
         return;
     }
-    const file = fileInput.value;
+    const file = fileInput.value.files[0]; // Get the selected file
+    
     let metadata = {
         contentType: 'audio/mpeg' 
     };
@@ -58,8 +59,8 @@ async function uploadAudio() {
             metadata.contentType = 'audio/wav';
         }
     }
-    const storagePath = `audio/${selectedArea.value}/${file.name}`;
-    const storageRef = firebaseRef(storage, storagePath);
+
+    const storageRef = firebaseRef(storage, `audio/${file.name}`);
     try {
         const snapshot = await uploadBytes(storageRef, file, metadata);
         const url = await getDownloadURL(snapshot.ref);
