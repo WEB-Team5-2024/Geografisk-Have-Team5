@@ -293,5 +293,11 @@ function drawLineToArea(lat, lng) {
   .map-container {
     height: 400px;
   }
-  </style>
-  
+}
+</script>
+
+<style scoped>
+.map-container {
+  height: 400px;
+}
+</style>
