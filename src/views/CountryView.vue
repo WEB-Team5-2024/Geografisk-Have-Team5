@@ -1,9 +1,6 @@
 <template>
-  <div>
-    <!-- Top Navigation -->
+  <div>  
     <TopNav />
-
-    <!-- Country Details -->
     <div>
       <div class="container">
         <img :src="imageUrl" alt="Country image" />

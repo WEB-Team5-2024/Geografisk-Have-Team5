@@ -272,7 +272,7 @@
   });
   
   function drawLineToArea(lat, lng) {
-    linesLayer.clearLayers();  // Clear previous lines
+    linesLayer.clearLayers();  
     if (currentLocationMarker) {
       L.polyline([
         currentLocationMarker.getLatLng(),
@@ -280,7 +280,7 @@
       ], {
         color: 'blue',
         weight: 4,
-        dashArray: '10, 10', // Dashed line style
+        dashArray: '10, 10',
         lineCap: 'round'
       }).addTo(linesLayer);
     }

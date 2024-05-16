@@ -12,7 +12,7 @@ import EventCard from '@/components/EventCard.vue';
 import 'v-calendar/style.css';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 
-// Reactive state
+
 const date = ref(new Date());
 const events = ref([]);
 
@@ -69,10 +69,10 @@ onMounted(() => {
 }
 
 .vc-highlight, .vc-state-highlight, .vc-day-content-highlight {
-  border: 2px solid white; // Adjust the border width as needed
+  border: 2px solid white; 
   background-color: transparent !important;
-  border-radius: 50%; // This makes the border a circle
-  color: white; // This makes the text white
+  border-radius: 50%; 
+  color: white; 
 }
 
 .vc-arrow {

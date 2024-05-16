@@ -129,8 +129,8 @@ const email = ref(auth.currentUser.email);
 
   .editor-toolbar {
     display: flex;
-    flex-wrap: wrap; /* Allow elements to wrap onto new lines */
-    justify-content: space-between; /* Distribute items evenly between rows */
+    flex-wrap: wrap; 
+    justify-content: space-between; 
     gap: 5px;
     margin-bottom: 10px;
     font-size: small;
@@ -139,7 +139,7 @@ const email = ref(auth.currentUser.email);
   /* Style for buttons */
   .editor-toolbar button,
   .editor-toolbar select {
-    flex-basis: calc(25% - 5px); /* Set the width of each item to 50% with a 5px gap */
+    flex-basis: calc(25% - 5px); 
     padding: 10px;
     border: none;
     background-color: #E0E0E0;
@@ -155,7 +155,7 @@ const email = ref(auth.currentUser.email);
 
   .style-dropdown,
   .align-dropdown {
-    flex-basis: calc(25% - 5px); /* Set the width of each dropdown to 25% with a 5px gap */
+    flex-basis: calc(25% - 5px); 
   }
 }
 </style>

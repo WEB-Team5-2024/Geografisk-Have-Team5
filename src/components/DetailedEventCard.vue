@@ -30,7 +30,7 @@
   const event = ref(null);
   
   onMounted(async () => {
-    const eventID = route.params.id; // Assuming your route has a parameter "id"
+    const eventID = route.params.id; 
     const eventDocRef = doc(db, 'events', eventID);
     try {
       const eventDocSnap = await getDoc(eventDocRef);
@@ -47,7 +47,7 @@
   
 
   <style lang="scss" scoped>
-@import '../styles/global.scss'; // Adjust this path if necessary
+@import '../styles/global.scss'; 
 
 .event-card {
   background-color: $secondary-color;

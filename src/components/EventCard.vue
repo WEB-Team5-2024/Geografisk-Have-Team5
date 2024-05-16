@@ -34,10 +34,10 @@ onMounted(async () => {
   const querySnapshot = await getDocs(eventsCollectionRef);
   events.value = querySnapshot.docs.map(doc => {
     const data = doc.data();
-    console.log(data); // Log to see what properties are available
+    console.log(data); 
     data.id = doc.id;
     data.date = data.date ? new Date(data.date).toLocaleDateString() : 'No Date Provided';
-    data.imageUrl = data.imageUrl || '/default-image.jpg'; // Ensure default
+    data.imageUrl = data.imageUrl || '/default-image.jpg'; 
     return data;
   });
 });
@@ -123,7 +123,7 @@ function navigateToEvent(id) {
       }
     
         .show-more {
-          color: $distancetext-color; /* Or any other color */
+          color: $distancetext-color; 
           cursor: pointer;
       }
 

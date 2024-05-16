@@ -23,7 +23,7 @@
   const attempts = 3;
   const time = 2;
   const headers = {
-    // Add your headers here if needed
+    
   };
   
   const callback = (data) => {

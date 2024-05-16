@@ -24,7 +24,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Ensures it's on top of other content */
+    z-index: 9999; 
   }
   
   .spinner {

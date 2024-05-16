@@ -41,7 +41,7 @@ watch([email, password], () => {
   background-color: $background-color;
   padding: 2rem;
   border-radius: $border-radius;
-  box-shadow: $drop-shadow;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
   width: 100%;
   max-width: 400px;
   margin: 50px auto 0;
@@ -59,7 +59,7 @@ watch([email, password], () => {
     
     label {
       display: block;
-      color: $primary-color;  // Use primary color for labels
+      color: $primary-color;  
       font-size: $medium-font-size;
       font-weight: $regular-weight;
       margin-bottom: 0.5rem;
@@ -72,14 +72,14 @@ watch([email, password], () => {
       border-radius: $border-radius;
       font-size: $medium-font-size;
       box-shadow: $inner-shadow;
-      background: $font-color; // Assuming you want a light background for inputs
-      color: $primary-color; // Use primary color for text in inputs
+      background: $font-color; 
+      color: $primary-color; 
     }
   }
 
   .login-button {
     width: 100%;
-    background-color: $primary-color; // Button uses primary color
+    background-color: $primary-color; 
     color: $font-color;
     padding: 0.8rem;
     font-size: $medium-font-size;
@@ -90,12 +90,12 @@ watch([email, password], () => {
     cursor: pointer;
 
     &:hover {
-      background-color: darken($primary-color, 10%); // Darken primary color on hover
+      background-color: darken($primary-color, 10%); 
     }
   }
 
   .error-message {
-    color: #FF6347; // Tomato color for errors, more visible
+    color: #FF6347; 
     font-size: $small-font-size;
     text-align: center;
     margin-top: 1rem;

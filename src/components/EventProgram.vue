@@ -16,12 +16,12 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const eventId = router.currentRoute.value.params.id;  // Assuming you're using Vue Router to manage routes
+const eventId = router.currentRoute.value.params.id;  
 const program = ref('Loading...');
 
 onMounted(async () => {
   try {
-    const eventDocRef = doc(db, 'events', eventId); // Dynamically use the event ID
+    const eventDocRef = doc(db, 'events', eventId); 
     const eventDocSnap = await getDoc(eventDocRef);
 
     if (eventDocSnap.exists()) {

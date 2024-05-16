@@ -218,14 +218,14 @@ const setTextAlign = (editor, align) => {
 };
 
 const setHeadingLevel = (editor, level) => {
-  console.log("Received level:", level);  // To check what value is received
-  const headingLevel = parseInt(level, 10);  // Ensure the parsing is correct
+  console.log("Received level:", level);  
+  const headingLevel = parseInt(level, 10);  
   console.log("Parsed heading level:", headingLevel);
 
   if (editor && headingLevel > 0 && headingLevel <= 5) {
     editor.chain().focus().setHeading({ level: headingLevel }).run();
   } else {
-    editor.chain().focus().setParagraph().run();  // Fallback to paragraph if no valid level
+    editor.chain().focus().setParagraph().run();  
   }
 };
 </script>
@@ -331,17 +331,17 @@ const setHeadingLevel = (editor, level) => {
 
   .editor-toolbar {
     display: flex;
-    flex-wrap: wrap; /* Allow elements to wrap onto new lines */
-    justify-content: space-between; /* Distribute items evenly between rows */
+    flex-wrap: wrap; 
+    justify-content: space-between; 
     gap: 5px;
     margin-bottom: 10px;
     font-size: small;
   }
 
-  /* Style for buttons */
+
   .editor-toolbar button,
   .editor-toolbar select {
-    flex-basis: calc(25% - 5px); /* Set the width of each item to 50% with a 5px gap */
+    flex-basis: calc(25% - 5px); 
     padding: 10px;
     border: none;
     background-color: #E0E0E0;
@@ -349,7 +349,7 @@ const setHeadingLevel = (editor, level) => {
     cursor: pointer;
   }
 
-  /* Style for active items */
+
   .editor-toolbar button.is-active,
   .editor-toolbar select.is-active {
     background-color: #BDBDBD;
@@ -357,7 +357,7 @@ const setHeadingLevel = (editor, level) => {
 
   .style-dropdown,
   .align-dropdown {
-    flex-basis: calc(25% - 5px); /* Set the width of each dropdown to 25% with a 5px gap */
+    flex-basis: calc(25% - 5px); 
   }
 }
 </style>
