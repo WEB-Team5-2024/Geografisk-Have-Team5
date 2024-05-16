@@ -22,17 +22,19 @@
     </div>
     <div v-else class="selectedAreaContainer">
       <div class="menuItem">
-        <div class="imageContainer">
-          <img :src="locationStore.selectedArea.imageURL" :alt="`${locationStore.selectedArea.name} Image`" />
-        </div>
-        <div class="textContainer">
-          <div class="titleAndDistance">
-            <h3>{{ locationStore.selectedArea.name }}</h3>
-            <p class="distanceText">{{ locationStore.selectedArea.distance !== null ? `${locationStore.selectedArea.distance} meters` : 'Calculating...' }}</p>
+        <div class="infoContainer">
+          <div class="imageContainer">
+            <img :src="locationStore.selectedArea.imageURL" :alt="`${locationStore.selectedArea.name} Image`" />
           </div>
-          <p>{{ locationStore.selectedArea.description }}</p>
-          <button @click="navigateToMoreInfo(locationStore.selectedArea)">Flere informationer <i class="bi bi-arrow-right-circle"></i></button>
+          <div class="textContainer">
+            <div class="titleAndDistance">
+              <h3>{{ locationStore.selectedArea.name }}</h3>
+              <p class="distanceText">{{ locationStore.selectedArea.distance !== null ? `${locationStore.selectedArea.distance} meters` : 'Calculating...' }}</p>
+            </div>
+            <p>{{ locationStore.selectedArea.description }}</p>
+          </div>
         </div>
+        <button @click="navigateToMoreInfo(locationStore.selectedArea)">Flere informationer <i class="bi bi-arrow-right-circle"></i></button>
       </div>
     </div>
   </div>
@@ -199,6 +201,7 @@ watch(route, (newRoute, oldRoute) => {
 
   .menuItem {
     display: flex;
+    flex-direction: column;
     background: $secondary-color;
     box-shadow: $menuContainer-shadow;
     border-radius: $border-radius;
@@ -206,7 +209,13 @@ watch(route, (newRoute, oldRoute) => {
     color: $font-color;
     position: relative;
     gap: 10px;
-    font-size: 20pxS;
+    font-size: 20px;
+
+    .infoContainer{
+      display: flex;
+      flex-direction: row;
+    }
+
 
     .imageContainer {
       flex-shrink: 0;
@@ -260,8 +269,8 @@ watch(route, (newRoute, oldRoute) => {
     }
 
     button {  
-      margin-top: 20px;
       display: flex;
+      justify-content: center;
       padding: 10px 15px;
       border-radius: 15px;
       font-size: 1rem;
@@ -271,7 +280,6 @@ watch(route, (newRoute, oldRoute) => {
       cursor: pointer;
       display: inline-block;
       text-align: center;
-      width: 80%;
     }
   }
 }
