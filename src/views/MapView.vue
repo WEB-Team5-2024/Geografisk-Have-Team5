@@ -1,8 +1,8 @@
 <template>
   <div>
     <TopNav />
-    <MapComponent :selected-area="selectedArea" />
-    <AreaCard />
+    <MapComponent @distance-calculated="handleDistanceCalculation" />
+      <AreaCard :distance="distanceResult" />
   </div>
 </template>
 
@@ -14,6 +14,28 @@ import TopNav from '../components/TopNav.vue';
 import MapComponent from '../components/MapComponent.vue';
 import AreaCard from '../components/AreaCard.vue';
 
+import { ref } from 'vue';
+
+const distanceResult = ref(null);
+
+function handleDistanceCalculation(distance) {
+    distanceResult.value = distance;
+}
+
+
+const locationStore = useLocationStore();
+
+onMounted(() => {
+  locationStore.fetchGardenAreas();
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      locationStore.updateCurrentPosition({ lat: latitude, lng: longitude });
+    });
+  }
+});
+</script>
 const locationStore = useLocationStore();
 
 onMounted(() => {
