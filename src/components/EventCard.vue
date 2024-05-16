@@ -5,11 +5,15 @@
         <img :src="event.imageURL || '/default-image.jpg'" :alt="`${event.imageURL} Image`" class="eventImage" />
       </div>
       <div class="textContainer">
-        <h3>{{ event.title }}</h3>
-        <p class="eventDate">{{ event.date || 'Date not available' }}</p>
-        <p class="truncated">{{ event.description }}</p>
+        <div class="titleandDateContainer">
+          <h3>{{ event.title }}</h3>
+          <p class="eventDate">{{ event.date || 'Date not available' }}</p>
+        </div>
+        <div class="describtionContainer">
+          <p class="truncated">{{ event.description }}</p>
+          <i class="bi bi-arrow-right-circle navigateIcon"></i>
+        </div>
       </div>
-      <i class="bi bi-arrow-right-circle navigateIcon"></i>
     </div>
   </div>
 </template>
@@ -24,7 +28,6 @@ const router = useRouter();
 const db = getFirestore();
 const events = ref([]);
 const showFullText = ref({});
-const maxCharacters = 100; // Adjust as needed
 
 onMounted(async () => {
   const eventsCollectionRef = collection(db, 'events');
@@ -44,9 +47,6 @@ function navigateToEvent(id) {
   router.push({ name: 'event-detail', params: { id } });
 }
 
-function toggleShowFullText(id) {
-  showFullText.value[id] = !showFullText.value[id];
-}
 </script>
 
 
@@ -94,6 +94,7 @@ function toggleShowFullText(id) {
           overflow: hidden;
           text-overflow: ellipsis;
         }
+
       }
 
       .textContainer {
@@ -108,6 +109,8 @@ function toggleShowFullText(id) {
         .eventDate {
           font-size: $extra-small-font-size;
           color: darken($font-color, 20%);
+          display: flex;
+          align-items: center;
         }
 
         p.truncated {
@@ -116,6 +119,7 @@ function toggleShowFullText(id) {
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: $extra-small-font-size;
       }
     
         .show-more {
@@ -124,9 +128,21 @@ function toggleShowFullText(id) {
       }
 
       .navigateIcon {
-        font-size: 30px;
+        font-size: 35px;
         color: $font-color;
         margin-left: auto;
+      }
+
+      .describtionContainer{
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+      }
+
+      .titleandDateContainer{
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
       }
     }
   }
