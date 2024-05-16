@@ -21,15 +21,18 @@
           <img :src="locationStore.selectedArea.imageURL" :alt="`${locationStore.selectedArea.name} Image`" />
         </div>
         <div class="textContainer">
-          <h3>{{ locationStore.selectedArea.name }}</h3>
+          <div class="titleAndDistance">
+            <h3>{{ locationStore.selectedArea.name }}</h3>
+            <p class="distanceText">{{ locationStore.selectedArea.distance !== null ? `${locationStore.selectedArea.distance} meters` : 'Calculating...' }}</p>
+          </div>
           <p>{{ locationStore.selectedArea.description }}</p>
-          <p class="distanceText">{{ locationStore.selectedArea.distance !== null ? `${locationStore.selectedArea.distance} meters` : 'Calculating...' }}</p>
           <button @click="navigateToMoreInfo(locationStore.selectedArea)">Flere informationer <i class="bi bi-arrow-right-circle"></i></button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { ref, watch } from 'vue';
@@ -143,19 +146,20 @@ watch(
   display: flex;
   gap: 15px;
   margin: 10px;
+  
 
   .menuItem {
     display: flex;
-    align-items: center;
     background: $secondary-color;
-    box-shadow: $drop-shadow-light;
+    box-shadow: $menuContainer-shadow;
     border-radius: $border-radius;
     padding: 20px;
     color: $font-color;
     position: relative;
+    gap: 10px;
+    font-size: 20pxS;
 
     .imageContainer {
-      padding: 5px;
       flex-shrink: 0;
       width: 100px;
       height: 100px;
@@ -171,19 +175,40 @@ watch(
     }
 
     .textContainer {
-      h3 {
-        margin: 0;
-        color: $font-color;
-        font-size: $medium-font-size;
-      }
+      flex-grow: 1;
+
+      .titleAndDistance {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+          font-size: $medium-font-size;
+          margin: 0;
+          color: $font-color;
+          font-size: 16px;
+        }
+
+        .distance {
+          background: #FFFFFF;
+          color: #000000;
+          padding: 5px 10px;
+          border-radius: 15px;
+          font-size: 12px;
+        }
+
+        .distanceText {
+          color: $distancetext-color;
+        }
 
       p {
-        margin: 0;
         font-size: $small-font-size;
+        margin: 0;
+        font-size: 12px;
         color: $font-color;
       }
-
-      button {
+    }
+      button {  
         margin-top: 20px;
         display: flex;
         padding: 10px 15px;
@@ -195,6 +220,7 @@ watch(
         cursor: pointer;
         display: inline-block;
         text-align: center;
+        width: 80%;
       }
     }
   }
