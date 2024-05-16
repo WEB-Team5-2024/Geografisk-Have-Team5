@@ -29,7 +29,7 @@
     position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 100;
+    z-index: 100000000;
 }
 .arrow {
     display: flex;
