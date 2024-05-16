@@ -50,16 +50,16 @@ export const useLocationStore = defineStore('location', {
       }
     },
     calculateDistance(pos1, pos2) {
-      const R = 6371e3; // Radius of the Earth in meters
-      const φ1 = pos1.lat * Math.PI / 180;
-      const φ2 = pos2.lat * Math.PI / 180;
-      const Δφ = (pos2.lat - pos1.lat) * Math.PI / 180;
-      const Δλ = (pos2.lng - pos1.lng) * Math.PI / 180;
-      const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      return Math.round(R * c); // Distance in meters
+      const earthRadiusInMeters = 6371e3; // Radius of the Earth in meters
+      const latitude1InRadians = pos1.lat * Math.PI / 180;
+      const latitude2InRadians = pos2.lat * Math.PI / 180;
+      const latitudeDifferenceInRadians = (pos2.lat - pos1.lat) * Math.PI / 180;
+      const longitudeDifferenceInRadians = (pos2.lng - pos1.lng) * Math.PI / 180;
+      const haversineFormulaComponent = Math.sin(latitudeDifferenceInRadians / 2) * Math.sin(latitudeDifferenceInRadians / 2) +
+                      Math.cos(latitude1InRadians) * Math.cos(latitude2InRadians) *
+                      Math.sin(longitudeDifferenceInRadians / 2) * Math.sin(longitudeDifferenceInRadians / 2);
+      const angularDistanceInRadians = 2 * Math.atan2(Math.sqrt(haversineFormulaComponent), Math.sqrt(1 - haversineFormulaComponent));
+      return Math.round(earthRadiusInMeters * angularDistanceInRadians); // Distance in meters
     }
   }
 });
