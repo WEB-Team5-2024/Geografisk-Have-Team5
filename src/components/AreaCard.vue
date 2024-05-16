@@ -1,5 +1,10 @@
 <template>
   <div>
+    <div class="TopNavcontainer">
+      <div @click="goBack"> <!-- Use the goBack method to handle back navigation -->
+        <svg class="arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.2 288 416 288c17.7 0 32-14.3 32-32s-14.3-32-32-32l-306.7 0L214.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg>
+      </div>
+    </div>
     <div class="menuContainer" v-if="!locationStore.selectedArea">
       <div class="menuItem" v-for="area in locationStore.gardenAreas" :key="area.id" @click="selectArea(area)">
         <div class="imageContainer">
@@ -33,14 +38,15 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useLocationStore } from '@/stores/location';
 
 const router = useRouter();
+const route = useRoute();
 const locationStore = useLocationStore();
+const previousRoute = ref(null);
 
 function selectArea(area) {
   locationStore.updateSelectedArea(area);
@@ -50,7 +56,18 @@ function navigateToMoreInfo(area) {
   router.push({ name: 'countryView', params: { id: area.id } });
 }
 
-// Watch for updates to the selected area in the store
+function goBack() {
+  if (locationStore.selectedArea) {
+    locationStore.updateSelectedArea(null); 
+    router.push({ name: 'map' }); 
+  } else if (previousRoute.value) {
+    router.push(previousRoute.value); 
+  } else {
+    router.back(); 
+  }
+}
+
+
 watch(
   () => locationStore.selectedArea,
   (newSelectedArea) => {
@@ -60,11 +77,43 @@ watch(
   },
   { immediate: true }
 );
+
+watch(route, (newRoute, oldRoute) => {
+  if (oldRoute && oldRoute.name) {
+    previousRoute.value = { name: oldRoute.name, params: oldRoute.params };
+  }
+}, { immediate: true });
 </script>
+
 
 <style scoped lang="scss">
 @import '@/styles/global.scss';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+
+.TopNavcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $primary-color;
+  border-bottom: 1px solid var(--color-border);
+  width:  60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 0;
+  margin: 5px;
+
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 100000000;
+}
+
+.arrow {
+  display: flex;
+  fill: $background-color;
+  width:  30px;
+  height: 30px;
+}
 
 .menuContainer {
   display: flex;
@@ -142,11 +191,11 @@ watch(
     }
   }
 }
+
 .selectedAreaContainer {
   display: flex;
   gap: 15px;
   margin: 10px;
-  
 
   .menuItem {
     display: flex;
@@ -200,6 +249,7 @@ watch(
         .distanceText {
           color: $distancetext-color;
         }
+      }
 
       p {
         font-size: $small-font-size;
@@ -208,20 +258,20 @@ watch(
         color: $font-color;
       }
     }
-      button {  
-        margin-top: 20px;
-        display: flex;
-        padding: 10px 15px;
-        border-radius: 15px;
-        font-size: 1rem;
-        background-color: #4A4C63;
-        color: white;
-        border: none;
-        cursor: pointer;
-        display: inline-block;
-        text-align: center;
-        width: 80%;
-      }
+
+    button {  
+      margin-top: 20px;
+      display: flex;
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 1rem;
+      background-color: #4A4C63;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: inline-block;
+      text-align: center;
+      width: 80%;
     }
   }
 }
