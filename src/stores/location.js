@@ -1,19 +1,34 @@
 import { defineStore } from 'pinia';
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 export const useLocationStore = defineStore('location', {
   state: () => ({
     currentPosition: { lat: null, lng: null },
-    gardenAreas: [
-      { id: 'kina', name: 'Kina', lat: 55.473884, lng: 9.494414, distance: null, color: 'red' },
-      { id: 'japan', name: 'Japan', lat: 55.472204, lng: 9.494612, distance: null, color: 'white' },
-      { id: 'europa', name: 'Europa', lat: 55.471681, lng: 9.495576, distance: null, color: 'blue' },
-      { id: 'nordamerika', name: 'Nord Amerika', lat: 55.470916, lng: 9.495305, distance: null, color: 'red' },
-      { id: 'sydamerika', name: 'Syd Amerika', lat: 55.470757, lng: 9.494155, distance: null, color: 'green' },
-      { id: 'asien', name: 'Asien', lat: 55.474452, lng: 9.493133, distance: null, color: 'yellow' }
-    ],
-    selectedArea: null
+    gardenAreas: [],
+    selectedArea: null,
   }),
   actions: {
+    async fetchGardenAreas() {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'areas'));
+        this.gardenAreas = querySnapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            name: data.name,
+            description: data.description,
+            lat: data.lat || null,
+            lng: data.lng || null,
+            distance: null,
+            imageURL: data.imageURL,
+          };
+        });
+        this.calculateDistances();
+      } catch (error) {
+        console.error('Error fetching garden areas:', error);
+      }
+    },
     updateCurrentPosition(position) {
       this.currentPosition = position;
       this.calculateDistances();
@@ -44,8 +59,7 @@ export const useLocationStore = defineStore('location', {
                 Math.cos(φ1) * Math.cos(φ2) *
                 Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const distance = Math.round(R * c); // Distance in meters
-      return distance;
+      return Math.round(R * c); // Distance in meters
     }
   }
 });
