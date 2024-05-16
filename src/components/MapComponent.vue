@@ -218,7 +218,7 @@
   };
   
   onMounted(() => {
-    map = L.map(mapContainer.value).setView([55.47509029500938, 9.492597226698194], 16);
+    map = L.map(mapContainer.value, { zoomControl: false}).setView([55.47509029500938, 9.492597226698194], 16);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
       {
