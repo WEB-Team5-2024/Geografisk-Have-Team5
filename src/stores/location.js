@@ -32,7 +32,6 @@ export const useLocationStore = defineStore('location', {
     updateCurrentPosition(position) {
       this.currentPosition = position;
       this.calculateDistances();
-      console(position)
     },
     updateSelectedArea(area) {
       this.selectedArea = area;

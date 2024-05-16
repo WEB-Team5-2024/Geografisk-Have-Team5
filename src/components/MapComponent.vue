@@ -287,17 +287,12 @@ function drawLineToArea(lat, lng) {
     }).addTo(linesLayer);
   }
 }
-  </script>
+</script>
   
-  <style scoped>
+<style scoped>
+
   .map-container {
     height: 400px;
   }
-}
-</script>
 
-<style scoped>
-.map-container {
-  height: 400px;
-}
 </style>

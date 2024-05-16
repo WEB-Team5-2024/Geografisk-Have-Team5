@@ -36,19 +36,6 @@ onMounted(() => {
   }
 });
 </script>
-const locationStore = useLocationStore();
-
-onMounted(() => {
-  locationStore.fetchGardenAreas();
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      locationStore.updateCurrentPosition({ lat: latitude, lng: longitude });
-    });
-  }
-});
-</script>
 
 <style scoped lang="scss">
 @import '@/styles/global.scss';
