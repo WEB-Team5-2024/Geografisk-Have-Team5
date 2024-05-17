@@ -19,8 +19,9 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { db } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+//import { db } from '@/firebase';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+const db = getFirestore();
 
 const route = useRoute();
 const plantDetails = ref(null);

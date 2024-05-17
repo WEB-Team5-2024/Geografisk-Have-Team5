@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import dotenv from 'dotenv';
+import { strict } from 'node:assert';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -18,5 +19,15 @@ export default defineConfig({
   },
   define: {
     'process.env': process.env
+  },
+  preview:{
+    port: 5173,
+    strictPort: true
+  },
+  server:{
+    port: 5173,
+    strictPort: true,
+    host: true,
+    origin:"http://0.0.0.0:5173" 
   }
 });

@@ -34,9 +34,9 @@ import { ref, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
-import { db } from '@/firebase';  
+//import { db } from '@/firebase';  
 import AudioPlayer from '@/components/AudioPlayer.vue';
-
+const db = getFirestore();
 const route = useRoute();
 const country = ref({ name: '', description: '', audioURL: '' });
 const imageUrl = ref('');

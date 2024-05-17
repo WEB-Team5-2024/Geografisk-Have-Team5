@@ -1,4 +1,5 @@
 // src/firebase.js
+/**
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
@@ -13,8 +14,11 @@ const firebaseConfig = {
   measurementId: process.env.VITE_FIREBASE_MEASUREMENT_ID
 };
 
-const firebaseApp = () => initializeApp(firebaseConfig);
-const db = () => getFirestore(firebaseApp);
-const storage = () => getStorage(firebaseApp);
+const firebaseApp =  initializeApp(firebaseConfig);
+export const db  = getFirestore(firebaseApp);
+export const storage = getStorage(firebaseApp);
 
-export default { firebaseApp, storage, db };
+
+
+export default { firebaseApp};
+ */

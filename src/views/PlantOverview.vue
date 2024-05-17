@@ -16,10 +16,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { db } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+//import { db } from '@/firebase';
+import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
 import PlantElement from '@/components/PlantElement.vue';
-
+const db = getFirestore();
 const route = useRoute();
 const plants = ref([]);
 const areaName = ref('');

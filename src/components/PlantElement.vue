@@ -10,8 +10,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { db } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+//import { db } from '@/firebase';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
+
+const db = getFirestore();
 
 const props = defineProps(['plant']);
 const router = useRouter();

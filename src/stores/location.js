@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia';
-import { db } from '../firebase';
-import { collection, getDocs } from 'firebase/firestore';
+//import { db } from '../firebase';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+
+const db = getFirestore();
 
 export const useLocationStore = defineStore('location', {
   state: () => ({

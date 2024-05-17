@@ -16,10 +16,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { ref as firebaseRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { storage } from '@/firebase';
+import { ref as firebaseRef, uploadBytes, getDownloadURL, getStorage } from 'firebase/storage';
+//import { storage } from '@/firebase';
 import { getFirestore, collection, getDocs, doc, updateDoc } from 'firebase/firestore';
 const db = getFirestore();
+const storage = getStorage();
 const areas = ref([]);
 const selectedArea = ref('');
 const audioURL = ref('');

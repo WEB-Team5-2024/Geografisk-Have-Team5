@@ -15,13 +15,13 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { db } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+//import { db } from '@/firebase';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import EventProgram from '@/components/EventProgram.vue';
 import DetailedEventCard from '@/components/DetailedEventCard.vue';
 import TopNav from '@/components/TopNav.vue';
 import LoadingSpinner from '@/components/LoadingSpinner.vue';
-
+const db = getFirestore();
 const route = useRoute();
 const event = ref(null);
 const isLoading = ref(true);

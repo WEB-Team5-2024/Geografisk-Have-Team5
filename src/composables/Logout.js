@@ -11,11 +11,13 @@ const firebaseConfig = {
   measurementId: "G-VDFEE8D343"
 };
 
+/*
 const auth = getAuth();
 export const signout = () => {signOut(auth).then(() => {
-  window.location.href="http://localhost:5173/"
+  window.location.href="/"
 }).catch((error) => {
   // An error happened.
 });
 }
+*/
 

@@ -11,10 +11,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { db } from '@/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+//import { db } from '@/firebase';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { useRouter } from 'vue-router';
-
+const db = getFirestore();
 const router = useRouter();
 const eventId = router.currentRoute.value.params.id;  
 const program = ref('Loading...');

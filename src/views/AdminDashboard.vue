@@ -6,23 +6,23 @@
     <EventManagement/>
     <AudioUploader/>
 
-    <button class="signout-button" @click="signout(email)">Sign out</Button>
+    <button class="signout-button" @click="authStore.logout()">Sign out</Button>
   </div>
 </template>
 
 <script setup>
 import TopNav from '@/components/TopNav.vue';
-import { signout } from '../composables/Logout';
+//import { signout } from '../composables/Logout';
 import PlantManagement from '@/components/PlantManagement.vue';
 import EventManagement from '@/components/EventManagement.vue';
 import AudioUploader from '@/components/AudioUploader.vue';
-
+import { useAuthStore } from '@/stores/auth';
 
 //mangler audio recorder component: 07-05/24
 
 import { ref } from 'vue';
 import { getAuth } from 'firebase/auth';
-
+const authStore = useAuthStore();
 // Initializer Firestore og andre states
 const auth = getAuth();
 const email = ref(auth.currentUser.email);
