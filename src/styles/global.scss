@@ -3,8 +3,15 @@ $background-color: #F4F4F4;
 $primary-color: #61805B;
 $secondary-color: #6C6E83;
 $btn-color: #494D66;
+$darkerbtn-color: #4A4C63;
+$font-color: #F4F4F4;
+$fontblack-color: #000000;
+$distancetext-color: #C3BFBF;
+
 
 //fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 $primary-font: 'Poppins', sans-serif;
 
 //font-sizes
@@ -22,18 +29,42 @@ $bold-weight:     700;
 
 //drop-shadows
 $drop-shadow: 0px 3px 8px (#000000);
-$inner-shadow: 0px 2px 10px (#000000) inset;
+$drop-shadow-light: 0px 3px 6px (#00000029);
+$inner-shadow: inset 0px 2px 10px #00000029, 0px 3px 6px #00000029;
 $btn-shadow: 2px 3.5px 10px (#000000);
+$menuContainer-shadow: 0px 3px 6px #00000029;
+$darkbutton-shadow: 2px 4px 10px #00000050;
 
+//border-radius
+$border-radius: 10px;
 
-button{
+body {
+    font-family: $primary-font;
+    
+    
+}
+
+a{
+    color: white;
+    text-decoration: none;
+}
+
+img{
+    width: 100%;
+    max-height:20vh;
+    object-fit: cover;
+}
+
+@mixin button{
     top: 563px;
     left: 8px;
-    width: 375px;
+    width: 90%;
     height: 50px;
     /* UI Properties */
     background: #6C6D80 0% 0% no-repeat padding-box;
     box-shadow: 2px 4px 10px #00000050;
     border-radius: 55px;
     opacity: 1;
+    border-style: none;
+    color: white;
 }
