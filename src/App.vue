@@ -25,13 +25,13 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
-  authDomain: process.env.VUE_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.VUE_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.VUE_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.VUE_APP_FIREBASE_APP_ID,
-  measurementId: process.env.VUE_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: AIzaSyDrmtxQRs_dtjJ_aVAWEIeZQNqx9oDhQ2A,
+  authDomain: geografisk-have-webteam5.firebaseapp.com ,
+  projectId: geografisk-have-webteam5,
+  storageBucket: geografisk-have-webteam5.appspot.com,
+  messagingSenderId: "350894266794",
+  appId: "1:350894266794:web:8c3d3487b823536f8873d3",
+  measurementId: G-VDFEE8D343
 };
 
 console.log(import.meta.env.VUE_APP_FIREBASE_MEASUREMENT_ID)
