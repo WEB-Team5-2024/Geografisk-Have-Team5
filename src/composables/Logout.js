@@ -1,5 +1,4 @@
 import { getAuth, signOut } from "firebase/auth";
-import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -12,8 +11,6 @@ const firebaseConfig = {
   measurementId: "G-VDFEE8D343"
 };
 
-
-const firebaseapp = initializeApp(firebaseConfig);
 const auth = getAuth();
 export const signout = () => {signOut(auth).then(() => {
   window.location.href="http://localhost:5173/"
