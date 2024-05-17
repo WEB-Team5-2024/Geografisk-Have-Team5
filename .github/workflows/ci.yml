@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
       - development
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,3 +39,9 @@ jobs:
         VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
         VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
       run: npm run test:unit
+
+    - name: Deploy to Firebase
+      if: github.ref == 'refs/heads/main' # Only deploy on pushes to the main branch
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      run: firebase deploy --only hosting
