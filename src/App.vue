@@ -19,6 +19,9 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import BottomNav from '@/components/bottomNav.vue';
 import { onAuthStateChanged, getAuth } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import  firebaseApp  from './firebase';
+
+firebaseApp();
 
 const isLoading = ref(true);
 
