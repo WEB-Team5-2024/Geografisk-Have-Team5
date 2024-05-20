@@ -39,34 +39,33 @@ console.log(process.env.VUE_APP_FIREBASE_MEASUREMENT_ID)
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db  = getFirestore(firebaseApp);
- const storage = getStorage(firebaseApp);
+  const storage = getStorage(firebaseApp);
+  const isLoading = ref(true);
 
-
-const isLoading = ref(true);
-
-const fetchData = async () => {
+  const fetchData = async () => {
   // sætter loading til at være "true"
-  isLoading.value = true;
+    isLoading.value = true;
 
-  try {
+    try {
     // 1. API logik skal insættes her
     // For example, if you're using fetch to make an API call:
     // const response = await fetch('your-api-url');
     // const data = await response.json();
 
     // Remember to replace the above with your actual API call
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-  } finally {
-    // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
-    isLoading.value = false;
-  }
-};
+    } catch (error) {
+        console.error("Error fetching data: ", error);
+      } finally {
+        // 2. når async/await er færdig sættes isloading tilbage til false så router-view componentet vises.
+        isLoading.value = false;
+    }
+  };
 
 const router = useRouter();
 const auth = getAuth();
 
 onAuthStateChanged(auth, (user) => {
+
   if(user) {
     if(router.currentRoute.value.path !== "/admin"){
     }
@@ -74,11 +73,13 @@ onAuthStateChanged(auth, (user) => {
     if(router.currentRoute.value.path !== "/login") {
     }
   }
+
 })
 
 onMounted(() => {
   fetchData();
 });
+
 </script>
 
 <style scoped lang="scss">
