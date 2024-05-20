@@ -1,7 +1,7 @@
 {
     "name": "Interaktiv kort og lydbog",
     "short_name": "Geografisk Have",
-    "start_url": "/",
+    "start_url": "https://geografisk-have-webteam5.web.app/",
     "icons": [
       {
         "src": "./src/assets/logo/geografiskhave_logo_hvid_med_tekst.svg",
