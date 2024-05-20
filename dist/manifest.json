@@ -4,20 +4,12 @@
     "start_url": "https://geografisk-have-webteam5.web.app",
     "icons": [
       {
-<<<<<<< HEAD
         "src": "./src/assets/logo/geografisk_have_icon.png",
-=======
-        "src": "./assets/geografiskhave_logo_hvid_med_tekst.svg",
->>>>>>> bfa663ce44fae23159ef026be0327db4953dec7a
         "sizes": "192x192",
         "type": "image/png"
       },
       {
-<<<<<<< HEAD
         "src": "./src/assets/logo/geografisk_have_icon.png",
-=======
-        "src": "./assets/geografiskhave_logo_hvid_med_tekst.svg",
->>>>>>> bfa663ce44fae23159ef026be0327db4953dec7a
         "sizes": "512x512",
         "type": "image/png"
       }
