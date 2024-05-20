@@ -14,7 +14,8 @@
         "node_modules",
         ".git",
         "firebase-debug.log",
-        "firebase-debug.*.log"
+        "firebase-debug.*.log",
+        "*.local"
       ]
     }
   ],
@@ -26,10 +27,12 @@
       "**/node_modules/**"
     ]
   },
-  "rewrites": [{
-    "source": "**",
-    "destination": "/index.html"
-  }],
+  "rewrites": [
+    {
+      "source": "**",
+      "destination": "/index.html"
+    }
+  ],
   "emulators": {
     "auth": {
       "port": 9099
@@ -45,5 +48,8 @@
     },
     "singleProjectMode": true
   },
-  "extensions": {}
+  "extensions": {},
+  "storage": {
+    "rules": "storage.rules"
+  }
 }
