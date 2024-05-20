@@ -24,9 +24,9 @@
   const emits = defineEmits(['update:areaDistance']);
   
   const mapContainer = ref(null);
-  let map = null;
-  let currentLocationMarker = null;
-  let linesLayer = null;
+  var map = null;
+  var currentLocationMarker = null;
+  var linesLayer = null;
   
   const locationStore = useLocationStore();
   
