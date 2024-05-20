@@ -40,6 +40,9 @@ jobs:
         VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
       run: npm run test:unit
 
+    - name: Copy manifest.json
+      run: cp manifest.json ./dist/manifest.json
+
       
 
     - name: Deploy to Firebase
