@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth } from 'firebase/auth';
 import HomePage from '../views/HomePage.vue';
-// fjern fucking ikke den her adminpage - det fucker med resten af siden (flex)
 import AdminPage from '@/views/AdminDashboard.vue';
 
 const router = createRouter({

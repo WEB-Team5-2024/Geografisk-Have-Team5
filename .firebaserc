@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "geografisk-have-webteam5"
-  }
+  },
+  "targets": {},
+  "etags": {
+    "geografisk-have-webteam5": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
 }
