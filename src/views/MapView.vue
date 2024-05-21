@@ -2,7 +2,7 @@
   <div>
     <TopNav />
     <MapComponent @distance-calculated="handleDistanceCalculation" />
-      <AreaCard :distance="distanceResult" />
+    <AreaCard :distance="distanceResult" />
   </div>
 </template>
 

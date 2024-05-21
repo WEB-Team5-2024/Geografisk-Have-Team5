@@ -9,7 +9,7 @@
       <div class="cFirstRow">
 
         <!-- tom kasse så audioplayeren ligner konceptet -->
-        <div id="empty"></div>
+        <router-link to="/admin"><div id="empty"></div></router-link>
 
         <div class="audioControls">
           
