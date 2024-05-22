@@ -246,13 +246,23 @@
         polygon.bindPopup(popupContent).openPopup();
       });
     });
+
+    var greenIcon = L.icon({
+    iconUrl: './src/assets/marker.png',
+
+    iconSize:     [42, 66], // size of the icon
+    shadowSize:   [0, 0], // size of the shadow
+    iconAnchor:   [21, 66], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [0, -66] // point from which the popup should open relative to the iconAnchor
+});
   
     // Locate and mark the user's current location
     map.locate({ setView: true, maxZoom: 16 });
     map.on('locationfound', e => {
       locationStore.updateCurrentPosition(e.latlng);
       if (!currentLocationMarker) {
-        currentLocationMarker = L.marker(e.latlng).addTo(map);
+        currentLocationMarker = L.marker(e.latlng, {icon: greenIcon}).addTo(map);
         currentLocationMarker.bindPopup('Your Current Location').openPopup();
       } else {
         currentLocationMarker.setLatLng(e.latlng);

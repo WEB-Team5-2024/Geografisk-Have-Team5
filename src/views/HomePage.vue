@@ -10,6 +10,7 @@
           <router-link to="/map"><button>Kort</button></router-link>
           <router-link to="/omHaven"><button>Om haven</button></router-link>
           <router-link to="/calender"><button>Event</button></router-link>
+          <router-link to="/admin"><button id="empty">kun for medlemmer </button></router-link>
         </div>
     </div>
     <bottomNav></bottomNav>
@@ -21,6 +22,10 @@
   
   <style scoped lang="scss">
 @import "@/styles/global.scss";
+
+#empty {
+
+}
 
 .bannerContainer {
   position: relative;
